@@ -95,12 +95,16 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     patchTextFieldValues();
-
     var initialDropDownItem = dropdownItems.firstWhere(
-        (dropDownElement) => dropDownElement.value == selectedDropdownValue);
+            (dropDownElement) => dropDownElement.value == selectedDropdownValue);
     selectedDropdownValue = initialDropDownItem.value!;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return SingleChildScrollView(
       child: Card(
