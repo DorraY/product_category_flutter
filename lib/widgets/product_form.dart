@@ -51,20 +51,25 @@ class _ProductFormState extends State<ProductForm> {
   void _submitProductData(bool editMode) {
     final enteredName = _nameController.text;
     final enteredPrice = null ?? double.tryParse(_priceController.text);
+    final categoryId = selectedDropdownValue;
+    print(selectedDropdownValue);
 
     if (enteredPrice == null ||
         enteredName.isEmpty ||
         enteredPrice <= 0 ||
-        _selectedDate == null) {
+        _selectedDate == null ||categoryId==null ) {
       return;
     }
+    print(categoryId);
+    final requestedCategory = widget.categories.firstWhere((category) => category==categoryId);
+    print(requestedCategory);
 
     if (editMode) {
       widget.action(widget.id, enteredName, enteredPrice,
-          _selectedDate, null);
+          _editedDate, requestedCategory);
     } else {
       widget.action(enteredName, enteredPrice, _selectedDate,
-          null);
+          requestedCategory);
     }
     Navigator.of(context).pop();
   }
@@ -152,6 +157,9 @@ class _ProductFormState extends State<ProductForm> {
                   onChanged: (String? newValue){
                     setState(() {
                       selectedDropdownValue = newValue!;
+                      print("set state");
+                      print(selectedDropdownValue);
+
                     });
                   },
                 ),

@@ -27,9 +27,9 @@ class _TabsScreenState extends State<TabsScreen> {
 
   final List<Product> _products = [
     Product('P0', 'Product0',12.777,DateTime.now(), Category('C4', 'Categorie5')),
-    Product('P1', 'Product1',12.25,DateTime.now(), Category('C2', 'Categorie2')),
-    Product('P2', 'Product2',12.7,DateTime.now(), Category('C3', 'Categorie3')),
-    Product('P3', 'Product3',98.0,DateTime.now(), Category('C0', 'Categorie0')),
+    Product('P1', 'Product1',12.25,DateTime.now(), Category('C2', 'Categorie3')),
+    Product('P2', 'Product2',12.7,DateTime.now(), Category('C3', 'Categorie4')),
+    Product('P3', 'Product3',98.0,DateTime.now(), Category('C0', 'Categorie1')),
   ];
 
   int _selectedPageIndex =0 ;
