@@ -39,10 +39,16 @@ class _CategoryFormState extends State<CategoryForm> {
     Navigator.of(context).pop();
   }
 
+  @override
+  void initState() {
+    patchTextFieldValues();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    patchTextFieldValues();
+
     return SingleChildScrollView(
       child: Card(
           elevation: 5,

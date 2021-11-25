@@ -59,8 +59,6 @@ class _ProductFormState extends State<ProductForm> {
     }
     final requestedCategory =
         widget.categories.firstWhere((category) => category.id == categoryId);
-    print("requestedCategory.id");
-    print(requestedCategory.id);
 
     if (editMode) {
       _editedDate ??= _selectedDate;
