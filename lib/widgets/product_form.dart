@@ -37,14 +37,12 @@ class _ProductFormState extends State<ProductForm> {
 
 
   void patchTextFieldValues() {
-    selectedDropdownValue  = widget.categories.first.title;
-    selectedDropdownKey = widget.categories.first.id;
+    selectedDropdownValue  = widget.categories.first.id;
     if (widget.editMode && widget.productToEdit != null) {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
-      selectedDropdownValue  = widget.productToEdit!.category.title;
-      selectedDropdownKey = widget.productToEdit!.category.id;
+      selectedDropdownValue  = widget.productToEdit!.category.id;
     }
   }
 
@@ -60,12 +58,11 @@ class _ProductFormState extends State<ProductForm> {
         _selectedDate == null ||categoryId==null ) {
       return;
     }
-    print(categoryId);
-    final requestedCategory = widget.categories.firstWhere((category) => category==categoryId);
+    final requestedCategory = widget.categories.firstWhere((category) => category.id==categoryId);
     print(requestedCategory);
 
     if (editMode) {
-      widget.action(widget.id, enteredName, enteredPrice,
+      widget.action(widget.productToEdit!.id, enteredName, enteredPrice,
           _editedDate, requestedCategory);
     } else {
       widget.action(enteredName, enteredPrice, _selectedDate,
@@ -99,7 +96,7 @@ class _ProductFormState extends State<ProductForm> {
     patchTextFieldValues();
 
     var initialDropDownItem =
-    dropdownItems.firstWhere((dropDownElement) => dropDownElement.value==selectedDropdownKey);
+    dropdownItems.firstWhere((dropDownElement) => dropDownElement.value==selectedDropdownValue);
 
     return SingleChildScrollView(
       child: Card(
@@ -159,7 +156,7 @@ class _ProductFormState extends State<ProductForm> {
                       selectedDropdownValue = newValue!;
                       print("set state");
                       print(selectedDropdownValue);
-
+                      print("set state");
                     });
                   },
                 ),
