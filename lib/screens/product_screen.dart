@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:product_category/models/product.dart';
+import 'package:product_category/widgets/product_list.dart';
 class ProductScreen extends StatelessWidget {
+
+
+  final List<Product> products;
+  final Function editCategory;
+  final Function deleteCategory;
+
+
+  ProductScreen(this.products, this.editCategory, this.deleteCategory);
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Text('Product ')
-    );
+    return  ProductList(products, deleteCategory,editCategory);
   }
 }

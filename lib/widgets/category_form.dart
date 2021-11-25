@@ -42,11 +42,7 @@ class _CategoryFormState extends State<CategoryForm> {
 
   @override
   Widget build(BuildContext context) {
-    void patchTextFieldValues() {
-      if (widget.editMode && widget.categoryToEdit != null) {
-        _titleController.text = widget.categoryToEdit!.title;
-      }
-    }
+    patchTextFieldValues();
     return SingleChildScrollView(
       child: Card(
           elevation: 5,

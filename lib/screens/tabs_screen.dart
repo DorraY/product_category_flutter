@@ -34,7 +34,6 @@ class _TabsScreenState extends State<TabsScreen> {
 
   int _selectedPageIndex =0 ;
 
-
   Category getCategoryById(String id) {
     return _categories.firstWhere((category) => category.id == id);
   }
@@ -71,6 +70,35 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  Product getProductById(String id) {
+    return _products.firstWhere((product) => product.id == id);
+  }
+
+  void _editProduct(String id, String newName, double newPrice, DateTime newDate) {
+    Product productToEdit = getProductById(id);
+    setState(() {
+      productToEdit.name = newName;
+      productToEdit.price = newPrice;
+      productToEdit.expiryDate = newDate;
+    });
+  }
+
+  void _deleteProduct(String id) {
+    setState(() {
+      _products.removeWhere((product) => product.id == id);
+    });
+  }
+
+  void _startEditProduct(BuildContext context, String id) {
+    Product productToEdit = getProductById(id);
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return ProductForm(_editProduct, true, id, productToEdit);
+      },
+    );
+  }
+
   void _addNewProduct(String name,double price, DateTime expiryDate, Category category) {
     final randomInteger = Random().nextInt(100) + _products.length;
     final newProduct = Product(
@@ -100,7 +128,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Map<String,dynamic>> _pages = [
-      {'screen':ProductScreen(),'title':'Product'},
+      {'screen':ProductScreen(_products,_startEditProduct,_deleteProduct),'title':'Product'},
       {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},
     ] ;
 
