@@ -16,9 +16,6 @@ class CategoryForm extends StatefulWidget {
 
 class _CategoryFormState extends State<CategoryForm> {
 
-  String initialDropdownValue= 'One' ;
-
-
   final _titleController = TextEditingController();
 
   void patchTextFieldValues() {
@@ -75,25 +72,6 @@ class _CategoryFormState extends State<CategoryForm> {
                         _submitCategoryData(widget.editMode)),
                 Container(
                   height: MediaQuery.of(context).size.height*0.05,
-                ),
-                DropdownButtonFormField(
-                  value: initialDropdownValue,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      initialDropdownValue = newValue!;
-                    });
-                  },
-                  items: ['One', 'Two', 'Free', 'Four']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
                 ),
                 ElevatedButton(
                     onPressed: () => _submitCategoryData(widget.editMode),

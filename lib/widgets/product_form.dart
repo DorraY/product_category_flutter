@@ -19,7 +19,6 @@ class ProductForm extends StatefulWidget {
 class _ProductFormState extends State<ProductForm> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
-  late final  categoryValue ;
 
   DateTime? _selectedDate;
   DateTime? _editedDate;
@@ -30,29 +29,26 @@ class _ProductFormState extends State<ProductForm> {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.name.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
-      categoryValue = widget.productToEdit!.category;
     }
   }
 
   void _submitProductData(bool editMode) {
     final enteredName = _nameController.text;
     final enteredPrice = null ?? double.tryParse(_priceController.text);
-    final enteredCategory = categoryValue;
 
     if (enteredPrice == null ||
         enteredName.isEmpty ||
-        enteredCategory.isEmpty ||
         enteredPrice <= 0 ||
         _selectedDate == null) {
       return;
     }
 
     if (editMode) {
-      widget.action(widget.id, enteredName, enteredPrice, enteredCategory,
-          _selectedDate, enteredCategory);
+      widget.action(widget.id, enteredName, enteredPrice,
+          _selectedDate, null);
     } else {
-      widget.action(enteredName, enteredPrice, enteredCategory, _selectedDate,
-          enteredCategory);
+      widget.action(enteredName, enteredPrice, _selectedDate,
+          null);
     }
     Navigator.of(context).pop();
   }
@@ -129,25 +125,6 @@ class _ProductFormState extends State<ProductForm> {
                     ],
                   ),
                 ),
-                DropdownButtonFormField(
-                value: 'Dorra',
-                icon: const Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Theme.of(context).primaryColor),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    categoryValue = newValue!;
-                  });
-                },
-                items: <String>['One', 'Two', 'Free', 'Four']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
                 ElevatedButton(
                     onPressed: () => _submitProductData(widget.editMode),
                     child: Text(

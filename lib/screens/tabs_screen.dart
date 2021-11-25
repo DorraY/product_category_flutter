@@ -11,7 +11,6 @@ import 'product_screen.dart';
 
 class TabsScreen extends StatefulWidget {
 
-
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
@@ -34,10 +33,7 @@ class _TabsScreenState extends State<TabsScreen> {
   ];
 
 
-  final List<Map<String,dynamic>> _pages = [
-    {'screen':ProductScreen(),'title':'Product'},
-    {'screen':CategoryScreen(),'title':'Category'},
-  ] ;
+
 
   int _selectedPageIndex =0 ;
 
@@ -79,6 +75,11 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String,dynamic>> _pages = [
+      {'screen':ProductScreen(),'title':'Product'},
+      {'screen':CategoryScreen(_categories),'title':'Category'},
+    ] ;
+
     return Scaffold(
         appBar: AppBar(title: Text(_pages[_selectedPageIndex]['title']),
         ),
