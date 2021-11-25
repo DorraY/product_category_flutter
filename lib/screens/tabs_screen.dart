@@ -94,7 +94,7 @@ class _TabsScreenState extends State<TabsScreen> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return ProductForm(_editProduct, true, id, productToEdit);
+        return ProductForm(_editProduct, true, id, productToEdit,_categories);
       },
     );
   }
@@ -118,7 +118,7 @@ class _TabsScreenState extends State<TabsScreen> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return pageIndex==0 ?  ProductForm(_addNewProduct,false,null,null) : CategoryForm(_addNewCategory,false,null,null);
+        return pageIndex==0 ?  ProductForm(_addNewProduct,false,null,null,_categories) : CategoryForm(_addNewCategory,false,null,null);
       },
     );
 
@@ -128,7 +128,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Map<String,dynamic>> _pages = [
-      {'screen':ProductScreen(_products,_startEditProduct,_deleteProduct),'title':'Product'},
+      {'screen':ProductScreen(_products,_categories  ,_startEditProduct,_deleteProduct),'title':'Product'},
       {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},
     ] ;
 

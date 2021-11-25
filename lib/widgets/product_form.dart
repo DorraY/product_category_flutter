@@ -1,3 +1,4 @@
+import 'package:product_category/models/category.dart';
 import 'package:product_category/models/product.dart';
 
 import 'package:flutter/material.dart';
@@ -10,7 +11,9 @@ class ProductForm extends StatefulWidget {
   String? id;
   Product? productToEdit;
 
-  ProductForm(this.action, this.editMode, this.id, this.productToEdit);
+  List<Category> categories;
+
+  ProductForm(this.action, this.editMode, this.id, this.productToEdit,this.categories);
 
   @override
   _ProductFormState createState() => _ProductFormState();
@@ -22,13 +25,26 @@ class _ProductFormState extends State<ProductForm> {
 
   DateTime? _selectedDate;
   DateTime? _editedDate;
+  late String selectedDropdownValue;
+  late String selectedDropdownKey ;
+
+  List<DropdownMenuItem<String>> get dropdownItems{
+    List<DropdownMenuItem<String>> menuItems = widget.categories.map((category) =>
+        DropdownMenuItem(child: Text(category.title),value: category.id)
+    ).toList();
+    return menuItems;
+  }
 
 
   void patchTextFieldValues() {
+    selectedDropdownValue  = widget.categories.first.title;
+    selectedDropdownKey = widget.categories.first.id;
     if (widget.editMode && widget.productToEdit != null) {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
+      selectedDropdownValue  = widget.productToEdit!.category.title;
+      selectedDropdownKey = widget.productToEdit!.category.id;
     }
   }
 
@@ -76,6 +92,10 @@ class _ProductFormState extends State<ProductForm> {
   @override
   Widget build(BuildContext context) {
     patchTextFieldValues();
+
+    var initialDropDownItem =
+    dropdownItems.firstWhere((dropDownElement) => dropDownElement.value==selectedDropdownKey);
+
     return SingleChildScrollView(
       child: Card(
           elevation: 5,
@@ -124,6 +144,16 @@ class _ProductFormState extends State<ProductForm> {
                                   color: Theme.of(context).primaryColor)))
                     ],
                   ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height*0.05,
+                ),
+                DropdownButton(items: dropdownItems,value: initialDropDownItem.value,
+                  onChanged: (String? newValue){
+                    setState(() {
+                      selectedDropdownValue = newValue!;
+                    });
+                  },
                 ),
                 ElevatedButton(
                     onPressed: () => _submitProductData(widget.editMode),
