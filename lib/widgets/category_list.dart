@@ -20,18 +20,9 @@ class CategoryList extends StatelessWidget {
     return SizedBox(
       height: mediaQuery.size.height,
       child: categories.isEmpty
-          ? LayoutBuilder(
-          builder: (context, constraints) => Column(
-            children: <Widget>[
-              Text(
-                'No categories yet',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          ))
+          ? const Center(
+        child: Text('No categories just yet!'),
+      )
           : ListView.builder(
           itemBuilder: (ctx, index) => CategoryItem(
               categories[index], deleteCategory,

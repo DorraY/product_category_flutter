@@ -32,10 +32,35 @@ class _TabsScreenState extends State<TabsScreen> {
     Product('P3', 'Product3',98.0,DateTime.now(), Category('C0', 'Categorie0')),
   ];
 
-
-
-
   int _selectedPageIndex =0 ;
+
+
+  Category getCategoryById(String id) {
+    return _categories.firstWhere((category) => category.id == id);
+  }
+
+  void _editCategory(String id, String newTitle) {
+    Category categoryToEdit = getCategoryById(id);
+    setState(() {
+      categoryToEdit.title = newTitle;
+    });
+  }
+
+  void _deleteCategory(String id) {
+    setState(() {
+      _categories.removeWhere((category) => category.id == id);
+    });
+  }
+
+  void _startEditCategory(BuildContext context, String id) {
+    Category categoryToEdit = getCategoryById(id);
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return CategoryForm(_editCategory, true, id, categoryToEdit);
+      },
+    );
+  }
 
   void _addNewCategory(String title) {
     final randomInteger = Random().nextInt(100) + _categories.length;
@@ -54,7 +79,6 @@ class _TabsScreenState extends State<TabsScreen> {
       _products.add(newProduct);
     });
   }
-
 
   void _selectPage(int index) {
     setState(() {
@@ -77,7 +101,7 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     final List<Map<String,dynamic>> _pages = [
       {'screen':ProductScreen(),'title':'Product'},
-      {'screen':CategoryScreen(_categories),'title':'Category'},
+      {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},
     ] ;
 
     return Scaffold(
