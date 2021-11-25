@@ -27,7 +27,7 @@ class _ProductFormState extends State<ProductForm> {
   void patchTextFieldValues() {
     if (widget.editMode && widget.productToEdit != null) {
       _nameController.text = widget.productToEdit!.name;
-      _priceController.text = widget.productToEdit!.name.toString();
+      _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
     }
   }
