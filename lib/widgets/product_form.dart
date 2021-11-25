@@ -4,7 +4,6 @@ import 'package:product_category/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 class ProductForm extends StatefulWidget {
   final Function action;
   final bool editMode;
@@ -13,7 +12,8 @@ class ProductForm extends StatefulWidget {
 
   List<Category> categories;
 
-  ProductForm(this.action, this.editMode, this.id, this.productToEdit,this.categories);
+  ProductForm(
+      this.action, this.editMode, this.id, this.productToEdit, this.categories);
 
   @override
   _ProductFormState createState() => _ProductFormState();
@@ -26,23 +26,23 @@ class _ProductFormState extends State<ProductForm> {
   DateTime? _selectedDate;
   DateTime? _editedDate;
   late String selectedDropdownValue;
-  late String selectedDropdownKey ;
+  late String selectedDropdownKey;
 
-  List<DropdownMenuItem<String>> get dropdownItems{
-    List<DropdownMenuItem<String>> menuItems = widget.categories.map((category) =>
-        DropdownMenuItem(child: Text(category.title),value: category.id)
-    ).toList();
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = widget.categories
+        .map((category) =>
+            DropdownMenuItem(child: Text(category.title), value: category.id))
+        .toList();
     return menuItems;
   }
 
-
   void patchTextFieldValues() {
-    selectedDropdownValue  = widget.categories.first.id;
+    selectedDropdownValue = widget.categories.first.id;
     if (widget.editMode && widget.productToEdit != null) {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
-      selectedDropdownValue  = widget.productToEdit!.category.id;
+      selectedDropdownValue = widget.productToEdit!.category.id;
     }
   }
 
@@ -55,59 +55,63 @@ class _ProductFormState extends State<ProductForm> {
     if (enteredPrice == null ||
         enteredName.isEmpty ||
         enteredPrice <= 0 ||
-        _selectedDate == null ||categoryId==null ) {
+        _selectedDate == null ||
+        categoryId == null) {
       return;
     }
-    final requestedCategory = widget.categories.firstWhere((category) => category.id==categoryId);
+    final requestedCategory =
+        widget.categories.firstWhere((category) => category.id == categoryId);
     print(requestedCategory);
 
     if (editMode) {
+      _editedDate ??= _selectedDate;
       widget.action(widget.productToEdit!.id, enteredName, enteredPrice,
           _editedDate, requestedCategory);
     } else {
-      widget.action(enteredName, enteredPrice, _selectedDate,
-          requestedCategory);
+      widget.action(
+          enteredName, enteredPrice, _selectedDate, requestedCategory);
     }
     Navigator.of(context).pop();
   }
 
   void _presentDatePicker() {
     showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2021, 11, 1),
-        lastDate: DateTime.now())
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2021, 11, 1),
+            lastDate: DateTime.now())
         .then((pickedDate) {
       if (pickedDate == null) {
         _selectedDate = pickedDate;
       } else {
         setState(() {
-          if (widget.editMode) {_editedDate=pickedDate;
+          if (widget.editMode) {
+            _editedDate = pickedDate;
+          } else {
+            _selectedDate = pickedDate;
           }
-          else {_selectedDate = pickedDate;}
         });
       }
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     patchTextFieldValues();
 
-    var initialDropDownItem =
-    dropdownItems.firstWhere((dropDownElement) => dropDownElement.value==selectedDropdownValue);
+    var initialDropDownItem = dropdownItems.firstWhere(
+        (dropDownElement) => dropDownElement.value == selectedDropdownValue);
 
     return SingleChildScrollView(
       child: Card(
           elevation: 5,
           child: Container(
-            height: MediaQuery.of(context).size.height*0.6,
+            height: MediaQuery.of(context).size.height * 0.6,
             padding: EdgeInsets.only(
-                top:10,
-                left:10,
-                right:10,
-                bottom: MediaQuery.of(context).viewInsets.bottom+10 ),
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
@@ -131,7 +135,7 @@ class _ProductFormState extends State<ProductForm> {
                         _submitProductData(widget.editMode)),
                 Container(
                   padding: const EdgeInsets.symmetric(),
-                  height: MediaQuery.of(context).size.height*0.05,
+                  height: MediaQuery.of(context).size.height * 0.05,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -148,10 +152,12 @@ class _ProductFormState extends State<ProductForm> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height*0.05,
+                  height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                DropdownButton(items: dropdownItems,value: initialDropDownItem.value,
-                  onChanged: (String? newValue){
+                DropdownButton(
+                  items: dropdownItems,
+                  value: initialDropDownItem.value,
+                  onChanged: (String? newValue) {
                     setState(() {
                       selectedDropdownValue = newValue!;
                       print("set state");
@@ -163,9 +169,7 @@ class _ProductFormState extends State<ProductForm> {
                 ElevatedButton(
                     onPressed: () => _submitProductData(widget.editMode),
                     child: Text(
-                        widget.editMode
-                            ? 'Edit product'
-                            : 'Add new product',
+                        widget.editMode ? 'Edit product' : 'Add new product',
                         style: TextStyle(
                             color: Theme.of(context).primaryColorLight)))
               ],

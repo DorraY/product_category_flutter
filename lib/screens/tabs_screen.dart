@@ -74,12 +74,13 @@ class _TabsScreenState extends State<TabsScreen> {
     return _products.firstWhere((product) => product.id == id);
   }
 
-  void _editProduct(String id, String newName, double newPrice, DateTime newDate) {
+  void _editProduct(String id, String newName, double newPrice, DateTime newDate, Category newCategory) {
     Product productToEdit = getProductById(id);
     setState(() {
       productToEdit.name = newName;
       productToEdit.price = newPrice;
       productToEdit.expiryDate = newDate;
+      productToEdit.category = newCategory;
     });
   }
 
