@@ -26,7 +26,6 @@ class _ProductFormState extends State<ProductForm> {
   DateTime? _selectedDate;
   DateTime? _editedDate;
   late String selectedDropdownValue;
-  late String selectedDropdownKey;
 
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = widget.categories
@@ -50,7 +49,6 @@ class _ProductFormState extends State<ProductForm> {
     final enteredName = _nameController.text;
     final enteredPrice = null ?? double.tryParse(_priceController.text);
     final categoryId = selectedDropdownValue;
-    print(selectedDropdownValue);
 
     if (enteredPrice == null ||
         enteredName.isEmpty ||
@@ -61,7 +59,8 @@ class _ProductFormState extends State<ProductForm> {
     }
     final requestedCategory =
         widget.categories.firstWhere((category) => category.id == categoryId);
-    print(requestedCategory);
+    print("requestedCategory.id");
+    print(requestedCategory.id);
 
     if (editMode) {
       _editedDate ??= _selectedDate;
@@ -101,6 +100,7 @@ class _ProductFormState extends State<ProductForm> {
 
     var initialDropDownItem = dropdownItems.firstWhere(
         (dropDownElement) => dropDownElement.value == selectedDropdownValue);
+    selectedDropdownValue = initialDropDownItem.value!;
 
     return SingleChildScrollView(
       child: Card(
@@ -121,18 +121,23 @@ class _ProductFormState extends State<ProductForm> {
                       labelText: 'Name',
                       labelStyle: TextStyle(color: Colors.purple),
                     ),
-                    controller: _nameController,
-                    onFieldSubmitted: (_) =>
-                        _submitProductData(widget.editMode)),
+                    controller: _nameController),
                 TextFormField(
                     cursorColor: Colors.purple,
                     decoration: const InputDecoration(
                         labelText: 'Price',
                         labelStyle: TextStyle(color: Colors.purple)),
                     controller: _priceController,
-                    keyboardType: TextInputType.number,
-                    onFieldSubmitted: (_) =>
-                        _submitProductData(widget.editMode)),
+                    keyboardType: TextInputType.number),
+                DropdownButtonFormField(
+                  items: dropdownItems,
+                  value: selectedDropdownValue,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedDropdownValue = newValue!;
+                    });
+                  },
+                ),
                 Container(
                   padding: const EdgeInsets.symmetric(),
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -153,18 +158,6 @@ class _ProductFormState extends State<ProductForm> {
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                DropdownButton(
-                  items: dropdownItems,
-                  value: initialDropDownItem.value,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedDropdownValue = newValue!;
-                      print("set state");
-                      print(selectedDropdownValue);
-                      print("set state");
-                    });
-                  },
                 ),
                 ElevatedButton(
                     onPressed: () => _submitProductData(widget.editMode),
