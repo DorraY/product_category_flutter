@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:product_category/models/category.dart';
 import 'package:product_category/models/product.dart';
 import 'package:product_category/services/category_service.dart';
+import 'package:product_category/services/product_service.dart';
 import 'package:product_category/widgets/product_form.dart';
 import 'package:product_category/widgets/category_form.dart';
 
@@ -19,8 +20,9 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
 
   final CategoryService categoryService = CategoryService();
+  final ProductService productService = ProductService();
   List<Category> _categories=[] ;
-  final List<Product> _products = [];
+  List<Product> _products = [];
 
   int _selectedPageIndex =0 ;
 
@@ -28,6 +30,9 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     categoryService.getCategories().then((categories) =>
         _categories = categories
+    );
+    productService.getProducts().then((products) =>
+      _products = products
     );
     super.initState();
   }
@@ -126,6 +131,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_products);
+
     final List<Map<String,dynamic>> _pages = [
       {'screen':ProductScreen(_products,_categories  ,_startEditProduct,_deleteProduct),'title':'Product'},
       {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},

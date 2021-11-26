@@ -3,7 +3,7 @@ import 'package:product_category/models/category.dart';
 class Product {
   String id;
   String name;
-  double price;
+  num price;
   DateTime expiryDate;
   Category category;
 
@@ -13,9 +13,9 @@ class Product {
     return Product(
       json['_id'] as String,
       json['name'] as String,
-      json['price'] as double,
-      json['expiryDate'] as DateTime,
-      json['category'] as Category,);
+      json['price'] as num,
+      DateTime.parse(json['expiryDate']),
+      Category(json['category']["_id"],json['category']["title"]) );
   }
 
 }
