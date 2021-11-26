@@ -21,7 +21,6 @@ class ProductService {
     if (response.statusCode == 200) {
       List<dynamic> productsJsonList = json.decode(response.body);
       for (var productJson in productsJsonList) {
-        print(productJson);
         products.add(Product.fromJson(productJson));
       }
       return products;

@@ -46,6 +46,8 @@ class _TabsScreenState extends State<TabsScreen> {
     await categoryService.updateCategory(id, newTitle);
     setState(() {
       categoryToEdit.title = newTitle;
+      Product affectedProduct = _products.firstWhere((product) => product.category.id==categoryToEdit.id);
+      affectedProduct.category.title = newTitle;
     });
   }
 
@@ -125,7 +127,6 @@ class _TabsScreenState extends State<TabsScreen> {
         return pageIndex==0 ?  (_categories.isEmpty ? SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             child: const Center(
-
               child: Text('You cannot add a product without adding categories first',style: TextStyle(
                 fontWeight: FontWeight.w900, fontSize: 20
               ),),

@@ -74,11 +74,16 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   void _presentDatePicker() {
+    DateTime currentDate = DateTime.now();
+
+    DateTime firstDate = DateTime(currentDate.year -5, currentDate.month , currentDate.day);
+    DateTime lastDate = DateTime(currentDate.year+5, currentDate.month , currentDate.day);
+
     showDatePicker(
             context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2021, 11, 1),
-            lastDate: DateTime.now())
+            initialDate: currentDate,
+            firstDate: firstDate,
+            lastDate: lastDate)
         .then((pickedDate) {
       if (pickedDate != null) {
           setState(() {
