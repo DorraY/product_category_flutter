@@ -41,6 +41,7 @@ class _ProductFormState extends State<ProductForm> {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
+      _editedDate = _selectedDate;
       selectedDropdownValue = widget.productToEdit!.category.id;
     }
   }
@@ -146,9 +147,12 @@ class _ProductFormState extends State<ProductForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(_selectedDate == null
-                          ? 'No Date Chosen'
-                          : DateFormat.yMMMd().format(_selectedDate!)),
+                      Text(
+                        widget.editMode ?  DateFormat.yMMMd().format(_editedDate!)  : _selectedDate == null
+                            ? 'No Date Chosen'
+                            : DateFormat.yMMMd().format(_selectedDate!)
+
+                      ),
                       TextButton(
                           onPressed: _presentDatePicker,
                           child: Text('Choose Expiry Date',
