@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:product_category/models/category.dart';
 import 'package:product_category/models/product.dart';
+import 'package:product_category/services/category_service.dart';
 import 'package:product_category/widgets/product_form.dart';
 import 'package:product_category/widgets/category_form.dart';
 
@@ -17,22 +18,23 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
 
-  final List<Category> _categories = [
-     Category('C0', 'Categorie1'),
-     Category('C1', 'Categorie2'),
-     Category('C2', 'Categorie3'),
-    Category('C3', 'Categorie4'),
-    Category('C4', 'Categorie5'),
-  ];
-
-  final List<Product> _products = [
-    Product('P0', 'Product0',12.777,DateTime.now(), Category('C4', 'Categorie5')),
-    Product('P1', 'Product1',12.25,DateTime.now(), Category('C2', 'Categorie3')),
-    Product('P2', 'Product2',12.7,DateTime.now(), Category('C3', 'Categorie4')),
-    Product('P3', 'Product3',98.0,DateTime.now(), Category('C0', 'Categorie1')),
-  ];
+  final CategoryService categoryService = CategoryService();
+  List<Category> _categories=[] ;
+  final List<Product> _products = [];
 
   int _selectedPageIndex =0 ;
+
+  @override
+  void initState() {
+    categoryService.getCategories().then((categories) =>
+        _categories = categories
+
+    );
+    categoryService.addCategory("titre").then((category) =>
+      print(category)
+    );
+    super.initState();
+  }
 
   Category getCategoryById(String id) {
     return _categories.firstWhere((category) => category.id == id);
