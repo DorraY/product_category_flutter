@@ -73,7 +73,7 @@ class CategoryService {
     if (response.statusCode == 200) {
       return response.body;
     } else {
-      throw Exception('Failed to edit category');
+      throw Exception('Failed to delete category');
     }
 
   }

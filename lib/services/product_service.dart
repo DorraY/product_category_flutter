@@ -26,8 +26,42 @@ class ProductService {
       }
       return products;
     } else {
-      throw Exception('Failed to load categories');
+      throw Exception('Failed to load products');
     }
+  }
+
+  Future<Product> addProduct(String newProductName,num newProductPrice,DateTime newProductExpiryDate,Category newProductCategory) async {
+    Product addedProduct;
+    final response = await http
+        .post(Uri.parse('${productURL}new-product'),
+        headers: {'Access-Control-Allow-Origin': "*",
+          "Accept": "application/json",
+        },body: {
+          "name": newProductName,
+          "expiryDate":newProductExpiryDate.toIso8601String(),
+          "category": newProductCategory.id,
+          "price": newProductPrice.toString()
+        });
+    if (response.statusCode == 201) {
+      addedProduct = Product.fromJson(json.decode(response.body));
+      return addedProduct;
+    } else {
+      throw Exception('Failed to add product');
+    }
+  }
+
+  Future<dynamic> deleteProduct(String id) async {
+    final response = await http
+        .delete(Uri.parse('${productURL}delete-product/${id}'),
+        headers: {'Access-Control-Allow-Origin': "*",
+          "Accept": "application/json",
+        });
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to delete product');
+    }
+
   }
 
 

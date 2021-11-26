@@ -87,7 +87,8 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  void _deleteProduct(String id) {
+  void _deleteProduct(String id) async {
+    await productService.deleteProduct(id);
     setState(() {
       _products.removeWhere((product) => product.id == id);
     });
@@ -103,10 +104,8 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void _addNewProduct(String name,double price, DateTime expiryDate, Category category) {
-    final randomInteger = Random().nextInt(100) + _products.length;
-    final newProduct = Product(
-        'C' + randomInteger.toString(),name,price, expiryDate,category);
+  void _addNewProduct(String name,double price, DateTime expiryDate, Category category) async {
+    Product newProduct = await productService.addProduct(name,price,expiryDate,category);
     setState(() {
       _products.add(newProduct);
     });
@@ -131,7 +130,6 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_products);
 
     final List<Map<String,dynamic>> _pages = [
       {'screen':ProductScreen(_products,_categories  ,_startEditProduct,_deleteProduct),'title':'Product'},
