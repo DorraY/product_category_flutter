@@ -23,7 +23,7 @@ class _ProductFormState extends State<ProductForm> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
 
-  DateTime _selectedDate;
+  late DateTime _selectedDate;
   late String selectedDropdownValue;
 
   List<DropdownMenuItem<String>> get dropdownItems {
@@ -40,7 +40,6 @@ class _ProductFormState extends State<ProductForm> {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
-      //_editedDate = _selectedDate;
       selectedDropdownValue = widget.productToEdit!.category.id;
     }
   }
@@ -61,7 +60,6 @@ class _ProductFormState extends State<ProductForm> {
         widget.categories.firstWhere((category) => category.id == categoryId);
 
     if (editMode) {
-      //_editedDate ??= _selectedDate;
       widget.action(widget.productToEdit!.id, enteredName, enteredPrice,
           _selectedDate, requestedCategory);
     } else {
