@@ -121,7 +121,9 @@ class _TabsScreenState extends State<TabsScreen> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return pageIndex==0 ?  ProductForm(_addNewProduct,false,null,null,_categories) : CategoryForm(_addNewCategory,false,null,null);
+        return pageIndex==0 ?  (_categories.isEmpty ? SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: const Text('You cant add a product without adding categories first')) : ProductForm(_addNewProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
       },
     );
 

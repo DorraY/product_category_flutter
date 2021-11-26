@@ -22,11 +22,6 @@ class CategoryItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton.icon(
-                  label: const Text('Delete'),
-                  onPressed: () => deleteCategory(
-                      category.id),
-                  icon: const Icon(Icons.delete)),
-              TextButton.icon(
                   label: const Text('Edit'),
                   onPressed: () =>
                       editCategoryModalSheet(
@@ -37,10 +32,6 @@ class CategoryItem extends StatelessWidget {
               : Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                  onPressed: () => deleteCategory(
-                      category.id),
-                  icon: const  Icon(Icons.delete)),
               IconButton(
                   onPressed: () =>
                       editCategoryModalSheet(
