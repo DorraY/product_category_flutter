@@ -77,8 +77,9 @@ class _TabsScreenState extends State<TabsScreen> {
     return _products.firstWhere((product) => product.id == id);
   }
 
-  void _editProduct(String id, String newName, double newPrice, DateTime newDate, Category newCategory) {
+  void _editProduct(String id, String newName, double newPrice, DateTime newDate, Category newCategory) async{
     Product productToEdit = getProductById(id);
+    await productService.updateProduct(id, newName,newPrice,newDate,newCategory);
     setState(() {
       productToEdit.name = newName;
       productToEdit.price = newPrice;
@@ -123,7 +124,12 @@ class _TabsScreenState extends State<TabsScreen> {
       builder: (_) {
         return pageIndex==0 ?  (_categories.isEmpty ? SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
-            child: const Text('You cant add a product without adding categories first')) : ProductForm(_addNewProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
+            child: const Center(
+
+              child: Text('You cannot add a product without adding categories first',style: TextStyle(
+                fontWeight: FontWeight.w900, fontSize: 20
+              ),),
+            )) : ProductForm(_addNewProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
       },
     );
 

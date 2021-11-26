@@ -50,6 +50,29 @@ class ProductService {
     }
   }
 
+  Future<Product> updateProduct(String id,String editedProductName, num editedProductPrice, DateTime editedProductExpiryDate,
+      Category editedProductCategory
+      ) async {
+    Product editedProduct;
+    final response = await http
+        .put(Uri.parse('${productURL}update-product/${id}'),
+        headers: {'Access-Control-Allow-Origin': "*",
+          "Accept": "application/json",
+        },body: {
+          "name": editedProductName,
+          "expiryDate":editedProductExpiryDate.toIso8601String(),
+          "category": editedProductCategory.id,
+          "price": editedProductPrice.toString()
+        });
+    if (response.statusCode == 200) {
+      editedProduct = Product.fromJson(json.decode(response.body));
+      return editedProduct;
+    } else {
+      throw Exception('Failed to edit product');
+    }
+
+  }
+
   Future<dynamic> deleteProduct(String id) async {
     final response = await http
         .delete(Uri.parse('${productURL}delete-product/${id}'),
