@@ -13,30 +13,26 @@ class CategoryService {
     List<Category> categories= [];
 
     final response = await http
-        .get(Uri.parse(categoryURL+'all-categories'),
+        .get(Uri.parse('${categoryURL}all-categories'),
       headers: {'Access-Control-Allow-Origin': "*",
         "Accept": "application/json",
       });
 
     if (response.statusCode == 200) {
       List<dynamic> categoriesJsonList = json.decode(response.body);
-      categoriesJsonList.forEach((categoryJson) {
+      for (var categoryJson in categoriesJsonList) {
         categories.add(Category.fromJson(categoryJson));
-      });
+      }
       return categories;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load categories');
     }
   }
 
   Future<Category> addCategory(String newCategoryTitle) async {
     Category addedCategory;
-
-    print(newCategoryTitle);
     final response = await http
-        .post(Uri.parse(categoryURL+'new-category'),
+        .post(Uri.parse('${categoryURL}new-category'),
         headers: {'Access-Control-Allow-Origin': "*",
           "Accept": "application/json",
         },body: {
@@ -46,10 +42,40 @@ class CategoryService {
       addedCategory = Category.fromJson(json.decode(response.body));
       return addedCategory;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to add category');
     }
+  }
+
+  Future<Category> updateCategory(String id,String editedCategoryTitle) async {
+    Category editedCategory;
+    final response = await http
+        .put(Uri.parse('${categoryURL}update-category/${id}'),
+        headers: {'Access-Control-Allow-Origin': "*",
+          "Accept": "application/json",
+        },body: {
+          "title": editedCategoryTitle
+        });
+    if (response.statusCode == 200) {
+      editedCategory = Category.fromJson(json.decode(response.body));
+      return editedCategory;
+    } else {
+      throw Exception('Failed to edit category');
+    }
+
+}
+
+  Future<dynamic> deleteCategory(String id) async {
+    final response = await http
+        .delete(Uri.parse('${categoryURL}delete-category/${id}'),
+        headers: {'Access-Control-Allow-Origin': "*",
+          "Accept": "application/json",
+        });
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to edit category');
+    }
+
   }
 
 

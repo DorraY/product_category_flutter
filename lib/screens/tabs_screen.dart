@@ -28,10 +28,6 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     categoryService.getCategories().then((categories) =>
         _categories = categories
-
-    );
-    categoryService.addCategory("titre").then((category) =>
-      print(category)
     );
     super.initState();
   }
@@ -40,14 +36,16 @@ class _TabsScreenState extends State<TabsScreen> {
     return _categories.firstWhere((category) => category.id == id);
   }
 
-  void _editCategory(String id, String newTitle) {
+  void _editCategory(String id, String newTitle) async{
     Category categoryToEdit = getCategoryById(id);
+    await categoryService.updateCategory(id, newTitle);
     setState(() {
       categoryToEdit.title = newTitle;
     });
   }
 
-  void _deleteCategory(String id) {
+  void _deleteCategory(String id) async{
+    await categoryService.deleteCategory(id);
     setState(() {
       _categories.removeWhere((category) => category.id == id);
     });
@@ -63,10 +61,8 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void _addNewCategory(String title) {
-    final randomInteger = Random().nextInt(100) + _categories.length;
-    final newCategory = Category(
-        'C' + randomInteger.toString(), title);
+  void _addNewCategory(String title) async{
+    Category newCategory = await categoryService.addCategory(title);
     setState(() {
       _categories.add(newCategory);
     });

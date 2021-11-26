@@ -26,7 +26,6 @@ class _CategoryFormState extends State<CategoryForm> {
 
   void _submitCategoryData(bool editMode) {
     final enteredTitle = _titleController.text;
-
     if (enteredTitle.isEmpty) {
       return;
     }
