@@ -23,8 +23,7 @@ class _ProductFormState extends State<ProductForm> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
 
-  DateTime? _selectedDate;
-  DateTime? _editedDate;
+  DateTime _selectedDate;
   late String selectedDropdownValue;
 
   List<DropdownMenuItem<String>> get dropdownItems {
@@ -41,7 +40,7 @@ class _ProductFormState extends State<ProductForm> {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
-      _editedDate = _selectedDate;
+      //_editedDate = _selectedDate;
       selectedDropdownValue = widget.productToEdit!.category.id;
     }
   }
@@ -62,9 +61,9 @@ class _ProductFormState extends State<ProductForm> {
         widget.categories.firstWhere((category) => category.id == categoryId);
 
     if (editMode) {
-      _editedDate ??= _selectedDate;
+      //_editedDate ??= _selectedDate;
       widget.action(widget.productToEdit!.id, enteredName, enteredPrice,
-          _editedDate, requestedCategory);
+          _selectedDate, requestedCategory);
     } else {
       widget.action(
           enteredName, enteredPrice, _selectedDate, requestedCategory);
@@ -80,14 +79,10 @@ class _ProductFormState extends State<ProductForm> {
             lastDate: DateTime.now())
         .then((pickedDate) {
       if (pickedDate == null) {
-        _selectedDate = pickedDate;
+        _selectedDate = pickedDate!;
       } else {
         setState(() {
-          if (widget.editMode) {
-            _editedDate = pickedDate;
-          } else {
-            _selectedDate = pickedDate;
-          }
+          _selectedDate = pickedDate;
         });
       }
     });
@@ -120,7 +115,7 @@ class _ProductFormState extends State<ProductForm> {
               children: <Widget>[
                 TextFormField(
                     cursorColor: Colors.purple,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Name',
                       labelStyle: TextStyle(color: Colors.purple),
                     ),
@@ -148,9 +143,9 @@ class _ProductFormState extends State<ProductForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        widget.editMode ?  DateFormat.yMMMd().format(_editedDate!)  : _selectedDate == null
+                        widget.editMode ?  DateFormat.yMMMd().format(_selectedDate)  : _selectedDate == null
                             ? 'No Date Chosen'
-                            : DateFormat.yMMMd().format(_selectedDate!)
+                            : DateFormat.yMMMd().format(_selectedDate)
 
                       ),
                       TextButton(
