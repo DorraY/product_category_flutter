@@ -26,6 +26,8 @@ class _ProductFormState extends State<ProductForm> {
   late DateTime _selectedDate;
   late String selectedDropdownValue;
 
+
+
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = widget.categories
         .map((category) =>
@@ -41,6 +43,8 @@ class _ProductFormState extends State<ProductForm> {
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
       selectedDropdownValue = widget.productToEdit!.category.id;
+    } else {
+      _selectedDate = DateTime.now() ;
     }
   }
 
@@ -76,13 +80,12 @@ class _ProductFormState extends State<ProductForm> {
             firstDate: DateTime(2021, 11, 1),
             lastDate: DateTime.now())
         .then((pickedDate) {
-      if (pickedDate == null) {
-        _selectedDate = pickedDate!;
-      } else {
-        setState(() {
-          _selectedDate = pickedDate;
-        });
-      }
+      if (pickedDate != null) {
+          setState(() {
+            _selectedDate = pickedDate;
+          });
+        }
+
     });
   }
 
@@ -141,9 +144,9 @@ class _ProductFormState extends State<ProductForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        widget.editMode ?  DateFormat.yMMMd().format(_selectedDate)  : _selectedDate == null
+                        widget.editMode ?  (DateFormat.yMMMd().format(_selectedDate))  : (_selectedDate == null
                             ? 'No Date Chosen'
-                            : DateFormat.yMMMd().format(_selectedDate)
+                            : DateFormat.yMMMd().format(_selectedDate))
 
                       ),
                       TextButton(
