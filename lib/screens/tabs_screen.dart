@@ -46,8 +46,8 @@ class _TabsScreenState extends State<TabsScreen> {
     await categoryService.updateCategory(id, newTitle);
     setState(() {
       categoryToEdit.title = newTitle;
-      Product affectedProduct = _products.firstWhere((product) => product.category.id==categoryToEdit.id);
-      affectedProduct.category.title = newTitle;
+      Product affectedProduct = _products.firstWhere((product) => product.category!.id==categoryToEdit.id);
+      affectedProduct.category!.title = newTitle;
     });
   }
 
@@ -146,7 +146,8 @@ class _TabsScreenState extends State<TabsScreen> {
     ] ;
 
     return Scaffold(
-        appBar: AppBar(title: Text(_pages[_selectedPageIndex]['title']),
+        appBar: AppBar(
+          title: Text(_pages[_selectedPageIndex]['title']),
         ),
         body: _pages[_selectedPageIndex]['screen'],
         bottomNavigationBar: BottomNavigationBar(
@@ -171,6 +172,7 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
+          tooltip: _selectedPageIndex ==0 ? 'Add new product' : 'Add new category',
             child: const Icon(Icons.add),
             onPressed: () =>  {
               _openAddForm(context, _selectedPageIndex)

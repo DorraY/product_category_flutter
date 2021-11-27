@@ -33,7 +33,11 @@ class ProductItem extends StatelessWidget {
                 )),
           ),
         ),
-        title: Text('${product.name} - ${product.category.title}'),
+        title: product.category!=null ? Row(children: [
+          Text('${product.name} - '),
+          Text('${product.category!.title}',style: TextStyle(fontWeight: FontWeight.bold))
+        ],) :  Text('${product.name}'),
+
         subtitle: Text('Expires in ${DateFormat.yMMMd().format(product.expiryDate)}'),
         trailing: SizedBox(
           width: MediaQuery.of(context).size.width * 0.3,
