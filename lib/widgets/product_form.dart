@@ -26,8 +26,6 @@ class _ProductFormState extends State<ProductForm> {
   late DateTime _selectedDate;
   late String selectedDropdownValue;
 
-
-
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = widget.categories
         .map((category) =>
@@ -44,7 +42,7 @@ class _ProductFormState extends State<ProductForm> {
       _selectedDate = widget.productToEdit!.expiryDate;
       selectedDropdownValue = widget.productToEdit!.category!.id;
     } else {
-      _selectedDate = DateTime.now() ;
+      _selectedDate = DateTime.now();
     }
   }
 
@@ -76,8 +74,10 @@ class _ProductFormState extends State<ProductForm> {
   void _presentDatePicker() {
     DateTime currentDate = DateTime.now();
 
-    DateTime firstDate = DateTime(currentDate.year -5, currentDate.month , currentDate.day);
-    DateTime lastDate = DateTime(currentDate.year+5, currentDate.month , currentDate.day);
+    DateTime firstDate =
+        DateTime(currentDate.year - 5, currentDate.month, currentDate.day);
+    DateTime lastDate =
+        DateTime(currentDate.year + 5, currentDate.month, currentDate.day);
 
     showDatePicker(
             context: context,
@@ -86,11 +86,10 @@ class _ProductFormState extends State<ProductForm> {
             lastDate: lastDate)
         .then((pickedDate) {
       if (pickedDate != null) {
-          setState(() {
-            _selectedDate = pickedDate;
-          });
-        }
-
+        setState(() {
+          _selectedDate = pickedDate;
+        });
+      }
     });
   }
 
@@ -98,7 +97,7 @@ class _ProductFormState extends State<ProductForm> {
   void initState() {
     patchTextFieldValues();
     var initialDropDownItem = dropdownItems.firstWhere(
-            (dropDownElement) => dropDownElement.value == selectedDropdownValue);
+        (dropDownElement) => dropDownElement.value == selectedDropdownValue);
     selectedDropdownValue = initialDropDownItem.value!;
     super.initState();
   }
@@ -109,7 +108,7 @@ class _ProductFormState extends State<ProductForm> {
       child: Card(
           elevation: 5,
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.7,
             padding: EdgeInsets.only(
                 top: 10,
                 left: 10,
@@ -142,62 +141,87 @@ class _ProductFormState extends State<ProductForm> {
                   },
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(),
-                  child: MediaQuery.of(context).size.width>300 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                          widget.editMode ?  (DateFormat.yMMMd().format(_selectedDate))  : (_selectedDate == null
-                              ? 'No Date Chosen'
-                              : DateFormat.yMMMd().format(_selectedDate))
-
-                      ),
-                      TextButton(
-                          onPressed: _presentDatePicker,
-                          child: Text('Choose Expiry Date',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: Theme.of(context).primaryColor)))
-                    ],
-                  ) :
-                  Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                      children: <Widget>[
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.01,
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: MediaQuery.of(context).size.width > 300
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(widget.editMode
+                                ? (DateFormat.yMMMd().format(_selectedDate))
+                                : (_selectedDate == null
+                                    ? 'No Date Chosen'
+                                    : DateFormat.yMMMd()
+                                        .format(_selectedDate))),
+                            TextButton(
+                                onPressed: _presentDatePicker,
+                                child: Text('Choose Expiry Date',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        color: Theme.of(context).primaryColor)))
+                          ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Text(
+                                widget.editMode
+                                    ? (DateFormat.yMMMd().format(_selectedDate))
+                                    : (_selectedDate == null
+                                        ? 'No Date Chosen'
+                                        : DateFormat.yMMMd()
+                                            .format(_selectedDate)),
+                                textAlign: TextAlign.center,
+                              ),
+                              TextButton(
+                                  onPressed: _presentDatePicker,
+                                  child: Text('Choose Expiry Date',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color:
+                                              Theme.of(context).primaryColor)))
+                            ]),
+                ),
+                MediaQuery.of(context).size.width > 300
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: const [
+                          ElevatedButton(
+                              onPressed: null, child: Text("Take image")),
+                        ],
+                      )
+                    : Container(),
+                MediaQuery.of(context).size.width > 300
+                    ? ElevatedButton(
+                        onPressed: () => _submitProductData(widget.editMode),
+                        child: Text(
+                            widget.editMode
+                                ? 'Edit product'
+                                : 'Add new product',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)))
+                    : Center(
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                                onPressed: null, child: Text("Take image")),
+                            Container(height: MediaQuery.of(context).size.height*0.04,),
+                            ElevatedButton(
+                                onPressed: () =>
+                                    _submitProductData(widget.editMode),
+                                child: Text(
+                                    widget.editMode
+                                        ? 'Edit product'
+                                        : 'Add new product',
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorLight))),
+                          ],
                         ),
-                        Text(
-                            widget.editMode ?  (DateFormat.yMMMd().format(_selectedDate))  : (_selectedDate == null
-                                ? 'No Date Chosen'
-                                : DateFormat.yMMMd().format(_selectedDate))
-
-                      , textAlign: TextAlign.center,  ),
-                        TextButton(
-                            onPressed: _presentDatePicker,
-                            child: Text('Choose Expiry Date',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    color: Theme.of(context).primaryColor)))
-                      ])
-                  ,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                MediaQuery.of(context).size.width>300 ? ElevatedButton(
-                    onPressed: () => _submitProductData(widget.editMode),
-                    child: Text(
-                        widget.editMode ? 'Edit product' : 'Add new product',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight))) : Center(
-                              child: ElevatedButton(
-                    onPressed: () => _submitProductData(widget.editMode),
-                    child: Text(
-                        widget.editMode ? 'Edit product' : 'Add new product',
-                        style: TextStyle(
-                              color: Theme.of(context).primaryColorLight))),
-                            )
-                
+                      )
               ],
             ),
           )),
