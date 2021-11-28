@@ -4,6 +4,8 @@ import 'package:product_category/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'image_picker_widget.dart';
+
 class ProductForm extends StatefulWidget {
   final Function action;
   final bool editMode;
@@ -92,6 +94,38 @@ class _ProductFormState extends State<ProductForm> {
       }
     });
   }
+  
+  Widget DatePickerWidget() {
+    return TextButton(
+        onPressed: _presentDatePicker,
+        child: Text('Choose Expiry Date',
+            style: TextStyle(
+                fontWeight: FontWeight.w900,
+                color: Theme.of(context).primaryColor)));
+  }
+
+  Widget DateDisplayWidget() {
+    return Text(
+      widget.editMode
+          ? (DateFormat.yMMMd().format(_selectedDate))
+          : (_selectedDate == null
+          ? 'No Date Chosen'
+          : DateFormat.yMMMd()
+          .format(_selectedDate)),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget SubmitButtonWidget() {
+    return ElevatedButton(
+        onPressed: () => _submitProductData(widget.editMode),
+        child: Text(
+            widget.editMode
+                ? 'Edit product'
+                : 'Add new product',
+            style: TextStyle(
+                color: Theme.of(context).primaryColorLight)));
+  }
 
   @override
   void initState() {
@@ -146,18 +180,8 @@ class _ProductFormState extends State<ProductForm> {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(widget.editMode
-                                ? (DateFormat.yMMMd().format(_selectedDate))
-                                : (_selectedDate == null
-                                    ? 'No Date Chosen'
-                                    : DateFormat.yMMMd()
-                                        .format(_selectedDate))),
-                            TextButton(
-                                onPressed: _presentDatePicker,
-                                child: Text('Choose Expiry Date',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        color: Theme.of(context).primaryColor)))
+                           DateDisplayWidget(),
+                            DatePickerWidget()
                           ],
                         )
                       : Column(
@@ -167,58 +191,26 @@ class _ProductFormState extends State<ProductForm> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.01,
                               ),
-                              Text(
-                                widget.editMode
-                                    ? (DateFormat.yMMMd().format(_selectedDate))
-                                    : (_selectedDate == null
-                                        ? 'No Date Chosen'
-                                        : DateFormat.yMMMd()
-                                            .format(_selectedDate)),
-                                textAlign: TextAlign.center,
-                              ),
-                              TextButton(
-                                  onPressed: _presentDatePicker,
-                                  child: Text('Choose Expiry Date',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          color:
-                                              Theme.of(context).primaryColor)))
+                              DateDisplayWidget(),
+                              DatePickerWidget()
                             ]),
                 ),
                 MediaQuery.of(context).size.width > 300
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          ElevatedButton(
-                              onPressed: null, child: Text("Take image")),
+                        children:  [
+                          ImagePickerWidget(),
                         ],
                       )
                     : Container(),
                 MediaQuery.of(context).size.width > 300
-                    ? ElevatedButton(
-                        onPressed: () => _submitProductData(widget.editMode),
-                        child: Text(
-                            widget.editMode
-                                ? 'Edit product'
-                                : 'Add new product',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)))
+                    ? SubmitButtonWidget()
                     : Center(
                         child: Column(
                           children: [
-                            ElevatedButton(
-                                onPressed: null, child: Text("Take image")),
+                            ImagePickerWidget(),
                             Container(height: MediaQuery.of(context).size.height*0.04,),
-                            ElevatedButton(
-                                onPressed: () =>
-                                    _submitProductData(widget.editMode),
-                                child: Text(
-                                    widget.editMode
-                                        ? 'Edit product'
-                                        : 'Add new product',
-                                    style: TextStyle(
-                                        color:
-                                            Theme.of(context).primaryColorLight))),
+                            SubmitButtonWidget(),
                           ],
                         ),
                       )
@@ -227,4 +219,6 @@ class _ProductFormState extends State<ProductForm> {
           )),
     );
   }
+
+
 }
