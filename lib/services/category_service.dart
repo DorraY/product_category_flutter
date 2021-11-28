@@ -6,7 +6,7 @@ import 'package:product_category/models/category.dart';
 
 
 class CategoryService {
-  final String categoryURL = "http://localhost:6666/category/";
+  final String categoryURL = "http://localhost:5000/category/";
   var client = http.Client();
 
   Future<List<Category>> getCategories() async {

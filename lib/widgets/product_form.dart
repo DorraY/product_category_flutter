@@ -105,7 +105,6 @@ class _ProductFormState extends State<ProductForm> {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Card(
           elevation: 5,
@@ -144,14 +143,13 @@ class _ProductFormState extends State<ProductForm> {
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(),
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: Row(
+                  child: MediaQuery.of(context).size.width>300 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        widget.editMode ?  (DateFormat.yMMMd().format(_selectedDate))  : (_selectedDate == null
-                            ? 'No Date Chosen'
-                            : DateFormat.yMMMd().format(_selectedDate))
+                          widget.editMode ?  (DateFormat.yMMMd().format(_selectedDate))  : (_selectedDate == null
+                              ? 'No Date Chosen'
+                              : DateFormat.yMMMd().format(_selectedDate))
 
                       ),
                       TextButton(
@@ -161,17 +159,45 @@ class _ProductFormState extends State<ProductForm> {
                                   fontWeight: FontWeight.w900,
                                   color: Theme.of(context).primaryColor)))
                     ],
-                  ),
+                  ) :
+                  Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                      children: <Widget>[
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        Text(
+                            widget.editMode ?  (DateFormat.yMMMd().format(_selectedDate))  : (_selectedDate == null
+                                ? 'No Date Chosen'
+                                : DateFormat.yMMMd().format(_selectedDate))
+
+                      , textAlign: TextAlign.center,  ),
+                        TextButton(
+                            onPressed: _presentDatePicker,
+                            child: Text('Choose Expiry Date',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: Theme.of(context).primaryColor)))
+                      ])
+                  ,
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                ElevatedButton(
+                MediaQuery.of(context).size.width>300 ? ElevatedButton(
                     onPressed: () => _submitProductData(widget.editMode),
                     child: Text(
                         widget.editMode ? 'Edit product' : 'Add new product',
                         style: TextStyle(
-                            color: Theme.of(context).primaryColorLight)))
+                            color: Theme.of(context).primaryColorLight))) : Center(
+                              child: ElevatedButton(
+                    onPressed: () => _submitProductData(widget.editMode),
+                    child: Text(
+                        widget.editMode ? 'Edit product' : 'Add new product',
+                        style: TextStyle(
+                              color: Theme.of(context).primaryColorLight))),
+                            )
+                
               ],
             ),
           )),
