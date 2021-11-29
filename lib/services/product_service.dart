@@ -10,11 +10,11 @@ class ProductService {
   final String productURL = "http://localhost:5000/product/";
   var client = http.Client();
 
-  Future<List<Product>> getProducts() async {
+  Future<List<Product>> getProducts(String id) async {
     List<Product> products= [];
 
     final response = await http
-        .get(Uri.parse('${productURL}all-products'),
+        .get(Uri.parse('${productURL}all-products/${id}'),
         headers: {'Access-Control-Allow-Origin': "*",
           "Accept": "application/json",
         });
@@ -23,6 +23,7 @@ class ProductService {
       for (var productJson in productsJsonList) {
         products.add(Product.fromJson(productJson));
       }
+      print(products);
       return products;
     } else {
       throw Exception('Failed to load products');

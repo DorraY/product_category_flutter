@@ -17,7 +17,7 @@ class CategoryItem extends StatelessWidget {
         title: Text(category.title),
         trailing: SizedBox(
           width: MediaQuery.of(context).size.width * 0.3,
-          child: MediaQuery.of(context).size.width  > 550
+          child: MediaQuery.of(context).size.width  > 600
               ? Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -26,7 +26,12 @@ class CategoryItem extends StatelessWidget {
                   onPressed: () =>
                       editCategoryModalSheet(
                           context, category.id),
-                  icon: const Icon(Icons.auto_fix_high))
+                  icon: const Icon(Icons.auto_fix_high)),
+              TextButton.icon(
+                  label: const Text('Delete'),
+                  onPressed: () =>
+                      deleteCategory(category.id),
+                  icon: const Icon(Icons.delete))
             ],
           )
               : Row(
@@ -36,7 +41,11 @@ class CategoryItem extends StatelessWidget {
                   onPressed: () =>
                       editCategoryModalSheet(
                           context, category.id),
-                  icon: const Icon(Icons.auto_fix_high))
+                  icon: const Icon(Icons.auto_fix_high)),
+              IconButton(
+                  onPressed: () => deleteCategory(
+                      category.id),
+                  icon: const  Icon(Icons.delete))
             ],
           ),
         ),

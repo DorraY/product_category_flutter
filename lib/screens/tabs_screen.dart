@@ -31,9 +31,6 @@ class _TabsScreenState extends State<TabsScreen> {
     categoryService.getCategories().then((categories) =>
         _categories = categories
     );
-    productService.getProducts().then((products) =>
-      _products = products
-    );
     super.initState();
   }
 
@@ -46,8 +43,8 @@ class _TabsScreenState extends State<TabsScreen> {
     await categoryService.updateCategory(id, newTitle);
     setState(() {
       categoryToEdit.title = newTitle;
-      Product affectedProduct = _products.firstWhere((product) => product.category!.id==categoryToEdit.id);
-      affectedProduct.category!.title = newTitle;
+/*      Product affectedProduct = _products.firstWhere((product) => product.category!.id==categoryToEdit.id);
+      affectedProduct.category!.title = newTitle;*/
     });
   }
 
@@ -124,7 +121,7 @@ class _TabsScreenState extends State<TabsScreen> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return pageIndex==0 ?  (_categories.isEmpty ? SizedBox(
+        return pageIndex==1 ?  (_categories.isEmpty ? SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             child: const Center(
               child: Text('You cannot add a product without adding categories first',style: TextStyle(
@@ -141,8 +138,9 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
 
     final List<Map<String,dynamic>> _pages = [
-      {'screen':ProductScreen(_products,_categories  ,_startEditProduct,_deleteProduct),'title':'Product'},
-      {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},
+    {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},
+      {'screen':ProductScreen(_categories  ,_startEditProduct,_deleteProduct),'title':'Product'},
+
     ] ;
 
     return Scaffold(
@@ -160,19 +158,19 @@ class _TabsScreenState extends State<TabsScreen> {
           items:  [
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.category),
-                label: 'Product List'
+                icon: const Icon(Icons.star),
+                label: 'Category List'
             ),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.star),
-                label: 'Category List'
+                icon: const Icon(Icons.category),
+                label: 'Product List'
             ),
           ],
         ),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
-          tooltip: _selectedPageIndex ==0 ? 'Add new product' : 'Add new category',
+          tooltip: _selectedPageIndex ==1 ? 'Add new product' : 'Add new category',
             child: const Icon(Icons.add),
             onPressed: () =>  {
               _openAddForm(context, _selectedPageIndex)
