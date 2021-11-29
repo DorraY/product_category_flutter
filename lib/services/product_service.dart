@@ -7,7 +7,7 @@ import 'package:product_category/models/product.dart';
 
 
 class ProductService {
-  final String productURL = "http://localhost:5000/product/";
+  final String productURL = "http://192.168.1.128:5000/product/";
   var client = http.Client();
 
   Future<List<Product>> getProducts(String id) async {
