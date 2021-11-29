@@ -87,13 +87,6 @@ class ProductItem extends StatelessWidget {
                     ),
                     Row(
                       children: <Widget>[
-                        const Icon(Icons.face),
-                        const SizedBox(width: 6),
-                        Text(product.category!.title),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
                         const Icon(Icons.monetization_on),
                         const SizedBox(width: 6),
                         Text(product.price.toString()),
@@ -109,14 +102,6 @@ class ProductItem extends StatelessWidget {
                           "${(DateFormat.yMd().format(product.expiryDate))}",textAlign: TextAlign.left,
                       overflow: TextOverflow.fade,
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      const Icon(Icons.face),
-                      const SizedBox(width: 6),
-                      Text(
-                          "${product.category!.title}",textAlign: TextAlign.left),
                     ],
                   ),
                   Row(

@@ -61,6 +61,29 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
+  Widget categoriesDropDown(double size) {
+    return SizedBox(
+      height: 50,
+      width: MediaQuery.of(context).size.width*size,
+      child: DropdownButtonFormField(
+        items: dropdownItems,
+        value: selectedDropDownValue,
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedDropDownValue = newValue!;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget getDataButton (double size) {
+    return SizedBox(
+        height: 50,
+        width: MediaQuery.of(context).size.width*size,
+        child:  ElevatedButton(onPressed: () =>getProductsByCategory(selectedDropDownValue!), child: Text('Fetch products')));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,27 +93,18 @@ class _ProductScreenState extends State<ProductScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
+            MediaQuery.of(context).size.width>500 ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width*0.3,
-                  child: DropdownButtonFormField(
-                    items: dropdownItems,
-                    value: selectedDropDownValue,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedDropDownValue = newValue!;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 50,
-                    width: MediaQuery.of(context).size.width*0.3,
-                    child:  ElevatedButton(onPressed: () =>getProductsByCategory(selectedDropDownValue!), child: Text('Fetch products'))),
+                categoriesDropDown(0.5),
+                getDataButton(0.3)
               ],
+            ) : Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              categoriesDropDown(1),
+              Container(height: 10,),
+              getDataButton(0.5)
+            ],
             ),
             ProductList(products,widget.categories, widget.deleteCategory,widget.editCategory)
           ],
