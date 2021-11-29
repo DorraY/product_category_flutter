@@ -1,5 +1,5 @@
 import 'package:product_category/models/category.dart';
-const backEndUrl = "http://localhost:5000/";
+const backEndUrl = "http://192.168.1.128:5000/";
 class Product {
   String id;
   String name;

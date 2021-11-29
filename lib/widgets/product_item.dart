@@ -15,6 +15,7 @@ class ProductItem extends StatelessWidget {
     return Column(
       children: [
         Card(
+
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           elevation: 4,
           margin: const EdgeInsets.all(10),
