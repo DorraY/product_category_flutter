@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:product_category/models/category.dart';
 import 'package:product_category/models/product.dart';
 
@@ -11,11 +12,12 @@ class ProductForm extends StatefulWidget {
   final bool editMode;
   String? id;
   Product? productToEdit;
+  CameraDescription camera;
 
   List<Category> categories;
 
   ProductForm(
-      this.action, this.editMode, this.id, this.productToEdit, this.categories);
+      this.action, this.editMode, this.id, this.productToEdit, this.categories,this.camera);
 
   @override
   _ProductFormState createState() => _ProductFormState();
@@ -199,7 +201,7 @@ class _ProductFormState extends State<ProductForm> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children:  [
-                          ImagePickerWidget(),
+                          ImagePickerWidget(widget.camera),
                         ],
                       )
                     : Container(),
@@ -208,7 +210,7 @@ class _ProductFormState extends State<ProductForm> {
                     : Center(
                         child: Column(
                           children: [
-                            ImagePickerWidget(),
+                            ImagePickerWidget(widget.camera),
                             Container(height: MediaQuery.of(context).size.height*0.04,),
                             SubmitButtonWidget(),
                           ],

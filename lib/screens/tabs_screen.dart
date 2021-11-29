@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:product_category/models/category.dart';
 import 'package:product_category/models/product.dart';
@@ -12,6 +13,10 @@ import 'category_screen.dart';
 import 'product_screen.dart';
 
 class TabsScreen extends StatefulWidget {
+
+  CameraDescription camera;
+
+  TabsScreen(this.camera);
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
@@ -99,7 +104,7 @@ class _TabsScreenState extends State<TabsScreen> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return ProductForm(_editProduct, true, id, productToEdit,_categories);
+        return ProductForm(_editProduct, true, id, productToEdit,_categories,widget.camera);
       },
     );
   }
@@ -127,7 +132,7 @@ class _TabsScreenState extends State<TabsScreen> {
               child: Text('You cannot add a product without adding categories first',style: TextStyle(
                 fontWeight: FontWeight.w900, fontSize: 20
               ),),
-            )) : ProductForm(_addNewProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
+            )) : ProductForm(_addNewProduct,false,null,null,_categories,widget.camera)) : (CategoryForm(_addNewCategory,false,null,null));
       },
     );
 

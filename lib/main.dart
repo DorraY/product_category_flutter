@@ -1,15 +1,23 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/tabs_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final cameras = await availableCameras();
+
+  final firstCamera = cameras.first;
+
+  runApp(MyApp(firstCamera));
 }
 
 class MyApp extends StatelessWidget {
 
+  MyApp(this.camera);
 
-  const MyApp({Key? key}) : super(key: key);
+  CameraDescription camera;
 
   // This widget is the root of your application.
   @override
@@ -35,7 +43,9 @@ class MyApp extends StatelessWidget {
                       fontFamily: 'OpenSans',
                       fontSize: 20,
                       fontWeight: FontWeight.bold)))),
-      home: TabsScreen(),
+      home: TabsScreen(camera),
     );
   }
+
+
 }

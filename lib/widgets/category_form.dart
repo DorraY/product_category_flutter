@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:product_category/models/category.dart';
 
 class CategoryForm extends StatefulWidget {
@@ -63,6 +64,10 @@ class _CategoryFormState extends State<CategoryForm> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 TextFormField(
+            maxLength: 18,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(18),
+              ],
                     cursorColor: Colors.purple,
                     decoration: const InputDecoration(
                       labelText: 'Title',
