@@ -21,7 +21,7 @@ class ProductList extends StatelessWidget {
     print(mediaQuery.size.width);
 
     return SizedBox(
-      height: 750,
+      height: mediaQuery.size.height*0.6,
       child: products.isEmpty
           ? const Center(
         child: Text('No products for the selected category!'),

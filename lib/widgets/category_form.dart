@@ -52,8 +52,7 @@ class _CategoryFormState extends State<CategoryForm> {
       child: Card(
           elevation: 5,
           child: Container(
-//            height: MediaQuery.of(context).size.height*0.6,
-            height:700,
+            height: MediaQuery.of(context).size.height*0.8,
             padding: EdgeInsets.only(
                 top:10,
                 left:10,

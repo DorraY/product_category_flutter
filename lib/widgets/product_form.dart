@@ -142,7 +142,7 @@ class _ProductFormState extends State<ProductForm> {
       child: Card(
           elevation: 5,
           child: Container(
-            height: 700,
+            height: MediaQuery.of(context).size.height,
             padding: EdgeInsets.only(
                 top: 10,
                 left: 10,
