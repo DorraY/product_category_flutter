@@ -9,14 +9,10 @@ class ProductScreen extends StatefulWidget {
   final Function editCategory;
   final Function deleteCategory;
 
-
   ProductScreen(this.categories, this.editCategory, this.deleteCategory);
-
-
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
-
 
 }
 
@@ -83,7 +79,6 @@ class _ProductScreenState extends State<ProductScreen> {
         width: MediaQuery.of(context).size.width*size,
         child:  ElevatedButton(onPressed: () =>getProductsByCategory(selectedDropDownValue!), child: Text('Fetch products')));
   }
-
 
   @override
   Widget build(BuildContext context) {

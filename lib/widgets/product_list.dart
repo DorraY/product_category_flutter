@@ -12,15 +12,16 @@ class ProductList extends StatelessWidget {
   final Function deleteProduct;
   final Function editProductModalSheet;
 
-
   ProductList(this.products,this.categories, this.deleteProduct, this.editProductModalSheet);
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    print(mediaQuery.size.height);
+    print(mediaQuery.size.width);
 
     return SizedBox(
-      height: mediaQuery.size.height,
+      height: 750,
       child: products.isEmpty
           ? const Center(
         child: Text('No products for the selected category!'),
