@@ -4,7 +4,7 @@ class Product {
   String id;
   String name;
   num price;
-  String image;
+  String? image;
   DateTime expiryDate;
   Category? category;
 
@@ -17,8 +17,7 @@ class Product {
       json['price'] as num,
       DateTime.parse(json['expiryDate']),
       json['category']==null ? null : Category(json!['category']!["_id"],json!['category']!["title"]),
-      backEndUrl+json['image'],
-
+      json['image']==null ? 'https://www.clipartmax.com/png/full/331-3316280_new-product-development-new-product-product-clip-art.png' : backEndUrl+json['image'],
     );
   }
 
