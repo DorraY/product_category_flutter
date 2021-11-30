@@ -1,5 +1,5 @@
 import 'package:product_category/models/category.dart';
-const backEndUrl = "http://localhost:5000/";
+const backEndUrl = "http://192.168.1.186:5000/";
 class Product {
   String id;
   String name;
@@ -17,7 +17,7 @@ class Product {
       json['price'] as num,
       DateTime.parse(json['expiryDate']),
       json['category']==null ? null : Category(json!['category']!["_id"],json!['category']!["title"]),
-      backEndUrl+json['image'],
+      json['image']==null ? '' : backEndUrl+json['image'],
 
     );
   }
