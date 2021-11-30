@@ -7,6 +7,7 @@ import 'package:product_category/models/product.dart';
 
 
 class ProductService {
+
   final String productURL = "http://192.168.1.186:5000/product/";
   var client = http.Client();
 

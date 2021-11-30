@@ -17,7 +17,8 @@ class CategoryService {
       headers: {'Access-Control-Allow-Origin': "*",
         "Accept": "application/json",
       });
-
+    print(response.body);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       List<dynamic> categoriesJsonList = json.decode(response.body);
       for (var categoryJson in categoriesJsonList) {
@@ -38,6 +39,8 @@ class CategoryService {
         },body: {
           "title": newCategoryTitle
         });
+    print(response.body);
+    print(response.request!.url);
     if (response.statusCode == 201) {
       addedCategory = Category.fromJson(json.decode(response.body));
       return addedCategory;
