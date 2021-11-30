@@ -4,7 +4,7 @@ class Product {
   String id;
   String name;
   num price;
-  String? image;
+  String image;
   DateTime expiryDate;
   Category? category;
 
