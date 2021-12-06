@@ -20,8 +20,9 @@ class CategoryList extends StatelessWidget {
     return SizedBox(
       height: mediaQuery.size.height,
       child: categories.isEmpty
-          ? const Center(
-        child: Text('No categories just yet!'),
+          ? Center(
+        child: Text('No categories just yet!',style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width*0.03),),
       )
           : ListView.builder(
           itemBuilder: (ctx, index) => CategoryItem(

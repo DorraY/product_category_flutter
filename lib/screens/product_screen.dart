@@ -19,7 +19,6 @@ class _ProductScreenState extends State<ProductScreen> {
   String? selectedDropDownValue;
   final ProductService productService = ProductService();
   List<Product> products = [];
-  bool showProductList = false;
 
   @override
   void initState() {
@@ -38,19 +37,6 @@ class _ProductScreenState extends State<ProductScreen> {
     } else {
       return [];
     }
-  }
-
-  getProductsByCategory(String id) {
-    productService.getProducts(id).then((productsFromDB) {
-      products = productsFromDB;
-      setState(() {
-        if (products.isNotEmpty) {
-          showProductList = true;
-        } else {
-          showProductList = false;
-        }
-      });
-    });
   }
 
   Widget categoriesDropDown(double size) {
@@ -113,6 +99,8 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ),
           )
-        : const Center(child: Text('You need categories to view the products'));
+        :  Center(child: Text('You need categories to view the products',style:
+      TextStyle(fontSize: MediaQuery.of(context).size.width*0.03)
+      ,));
   }
 }

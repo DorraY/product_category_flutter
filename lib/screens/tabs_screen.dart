@@ -82,11 +82,11 @@ class _TabsScreenState extends State<TabsScreen> {
             ? (_categories.isEmpty
                 ? SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
-                    child: const Center(
+                    child:  Center(
                       child: Text(
                         'You cannot add a product without adding categories first',
                         style: TextStyle(
-                            fontWeight: FontWeight.w900, fontSize: 10),
+                            fontWeight: FontWeight.w900, fontSize: MediaQuery.of(context).size.width*0.03),
                       ),
                     ))
                 : ProductForm(

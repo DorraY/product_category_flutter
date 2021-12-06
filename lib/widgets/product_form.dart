@@ -42,7 +42,7 @@ class _ProductFormState extends State<ProductForm> {
       _nameController.text = widget.productToEdit!.name;
       _priceController.text = widget.productToEdit!.price.toString();
       _selectedDate = widget.productToEdit!.expiryDate;
-      selectedDropdownValue = widget.productToEdit!.category!.id;
+      selectedDropdownValue = widget.productToEdit!.category.id;
     } else {
       _selectedDate = DateTime.now();
     }

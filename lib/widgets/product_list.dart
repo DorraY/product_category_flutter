@@ -22,8 +22,10 @@ class ProductList extends StatelessWidget {
     return SizedBox(
       height: mediaQuery.size.height*0.6,
       child: products.isEmpty
-          ? const Center(
-        child: Text('No products for the selected category!'),
+          ?  Center(
+        child: Text('No products for the selected category!',style: TextStyle(
+          fontSize: MediaQuery.of(context).size.width*0.03
+        ),),
       )
           : ListView.builder(
           itemBuilder: (ctx, index) => ProductItem(

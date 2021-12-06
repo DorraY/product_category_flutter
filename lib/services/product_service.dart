@@ -24,7 +24,6 @@ class ProductService {
       for (var productJson in productsJsonList) {
         products.add(Product.fromJson(productJson));
       }
-      print(products);
       return products;
     } else {
       throw Exception('Failed to load products');
