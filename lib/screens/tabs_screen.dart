@@ -10,30 +10,24 @@ import 'package:product_category/widgets/product_form.dart';
 import 'package:product_category/widgets/category_form.dart';
 import 'package:provider/provider.dart';
 
-
 import 'category_screen.dart';
 import 'product_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-
   final CategoryService categoryService = CategoryService();
-  final ProductService productService = ProductService();
-  List<Category> _categories=[] ;
-  List<Product> _products = [];
-
-  int _selectedPageIndex =0 ;
+  List<Category> _categories = [];
+  int _selectedPageIndex = 0;
 
   @override
   void initState() {
-    categoryService.getCategories().then((categories) =>
-        _categories = categories
-    );
+    categoryService
+        .getCategories()
+        .then((categories) => _categories = categories);
     super.initState();
   }
 
@@ -41,17 +35,15 @@ class _TabsScreenState extends State<TabsScreen> {
     return _categories.firstWhere((category) => category.id == id);
   }
 
-  void _editCategory(String id, String newTitle) async{
+  void _editCategory(String id, String newTitle) async {
     Category categoryToEdit = getCategoryById(id);
     await categoryService.updateCategory(id, newTitle);
     setState(() {
       categoryToEdit.title = newTitle;
-/*      Product affectedProduct = _products.firstWhere((product) => product.category!.id==categoryToEdit.id);
-      affectedProduct.category!.title = newTitle;*/
     });
   }
 
-  void _deleteCategory(String id) async{
+  void _deleteCategory(String id) async {
     await categoryService.deleteCategory(id);
     setState(() {
       _categories.removeWhere((category) => category.id == id);
@@ -68,7 +60,7 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void _addNewCategory(String title) async{
+  void _addNewCategory(String title) async {
     Category newCategory = await categoryService.addCategory(title);
     setState(() {
       _categories.add(newCategory);
@@ -81,17 +73,25 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  void _openAddForm(BuildContext context, int pageIndex,ProductList productList) {
+  void _openAddForm(
+      BuildContext context, int pageIndex, ProductList productList) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return pageIndex==1 ?  (_categories.isEmpty ? SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: const Center(
-              child: Text('You cannot add a product without adding categories first',style: TextStyle(
-                fontWeight: FontWeight.w900, fontSize: 10
-              ),),
-            )) : ProductForm(productList.addProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
+        return pageIndex == 1
+            ? (_categories.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: const Center(
+                      child: Text(
+                        'You cannot add a product without adding categories first',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 10),
+                      ),
+                    ))
+                : ProductForm(
+                    productList.addProduct, false, null, null, _categories))
+            : (CategoryForm(_addNewCategory, false, null, null));
       },
     );
   }
@@ -100,44 +100,47 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductList>(context);
 
-    final List<Map<String,dynamic>> _pages = [
-    {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},
-      {'screen':ProductScreen(_categories),'title':'Product'},] ;
+    final List<Map<String, dynamic>> _pages = [
+      {
+        'screen':
+            CategoryScreen(_categories, _startEditCategory, _deleteCategory),
+        'title': 'Category'
+      },
+      {'screen': ProductScreen(_categories), 'title': 'Product'},
+    ];
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(_pages[_selectedPageIndex]['title']),
-        ),
-        body: _pages[_selectedPageIndex]['screen'],
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: _selectPage,
-          unselectedItemColor: Colors.white,
-          selectedItemColor: Theme.of(context).accentColor,
-          backgroundColor: Theme.of(context).primaryColor,
-          currentIndex: _selectedPageIndex,
-          type: BottomNavigationBarType.shifting,
-          items:  [
-            BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.star),
-                label: 'Category List'
-            ),
-            BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.category),
-                label: 'Product List'
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: Text(_pages[_selectedPageIndex]['title']),
+      ),
+      body: _pages[_selectedPageIndex]['screen'],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: _selectPage,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        currentIndex: _selectedPageIndex,
+        type: BottomNavigationBarType.shifting,
+        items: [
+          BottomNavigationBarItem(
+              backgroundColor: Theme.of(context).primaryColor,
+              icon: const Icon(Icons.star),
+              label: 'Category List'),
+          BottomNavigationBarItem(
+              backgroundColor: Theme.of(context).primaryColor,
+              icon: const Icon(Icons.category),
+              label: 'Product List'),
+        ],
+      ),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
-          tooltip: _selectedPageIndex ==1 ? 'Add new product' : 'Add new category',
+            tooltip: _selectedPageIndex == 1
+                ? 'Add new product'
+                : 'Add new category',
             child: const Icon(Icons.add),
-            onPressed: () =>  {
-              _openAddForm(context, _selectedPageIndex,productProvider)
-            }   ),
+            onPressed: () =>
+                {_openAddForm(context, _selectedPageIndex, productProvider)}),
       ),
-
     );
   }
 }

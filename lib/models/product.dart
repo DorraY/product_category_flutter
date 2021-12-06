@@ -15,7 +15,7 @@ class Product {
       json['_id'] as String,
       json['name'] as String,
       json['price'] as num,
-      DateTime.parse(json['expiryDate']),
+      DateTime.parse(json['expiryDate']).toLocal(),
       Category(json!['category']!["_id"],json!['category']!["title"]),
       json['image']==null ? '' : backEndUrl+json['image'],
     );
