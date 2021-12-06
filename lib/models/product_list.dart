@@ -9,6 +9,8 @@ import 'product.dart';
 class ProductList extends ChangeNotifier {
   List<Product> _products = [];
   bool showProductList = false;
+  String _selectedCategory = '';
+
   ProductService productService = ProductService();
 
   void getProductsByCategory(String id) {
@@ -24,6 +26,11 @@ class ProductList extends ChangeNotifier {
     }) ;
   }
 
+
+  set selectedCategory(String value) {
+    _selectedCategory = value;
+  }
+
   List<Product> get products {
     return [..._products];
   }
@@ -34,8 +41,10 @@ class ProductList extends ChangeNotifier {
 
   void addProduct(String newName,double newPrice, DateTime newExpiryDate, cat.Category newCategory) async{
     Product newProduct = await productService.addProduct(newName,newPrice,newExpiryDate,newCategory);
-    _products.add(newProduct);
-    notifyListeners();
+    if (newCategory.id==_selectedCategory) {
+      _products.add(newProduct);
+      notifyListeners();
+    }
   }
 
   void deleteProduct(String productId) async {
@@ -68,6 +77,9 @@ class ProductList extends ChangeNotifier {
     productToEdit.price = newPrice;
     productToEdit.expiryDate = newDate;
     productToEdit.category = newCategory;
+    if (newCategory.id!=_selectedCategory) {
+      _products.removeWhere((product)=> product.id==productToEdit.id);
+    }
     notifyListeners();
   }
 }

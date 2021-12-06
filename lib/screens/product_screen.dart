@@ -82,6 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<prod_provider.ProductList>(context);
+    productProvider.selectedCategory = (widget.categories.isNotEmpty ?  selectedDropDownValue :  '')!;
 
     return widget.categories.isNotEmpty
         ? SingleChildScrollView(
