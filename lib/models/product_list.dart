@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:product_category/services/category_service.dart';
 import 'package:product_category/services/product_service.dart';
+import 'package:product_category/widgets/product_form.dart';
 import 'category.dart' as cat;
 import 'product.dart';
 
@@ -41,6 +44,23 @@ class ProductList extends ChangeNotifier {
     notifyListeners();
   }
 
+  void startEditProduct(BuildContext context, String id) {
+    Product productToEdit = getProductById(id);
+    List<cat.Category> _categories = [];
+    final CategoryService categoryService = CategoryService();
+
+    categoryService.getCategories().then((categories) {
+      _categories = categories;
+      showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return ProductForm(editProduct, true, id, productToEdit,_categories);
+        },
+      );
+    }
+    );
+  }
+
   void editProduct(String id, String newName, double newPrice, DateTime newDate, cat.Category newCategory) async{
     Product productToEdit = getProductById(id);
     await productService.updateProduct(id, newName,newPrice,newDate,newCategory);
@@ -50,11 +70,4 @@ class ProductList extends ChangeNotifier {
     productToEdit.category = newCategory;
     notifyListeners();
   }
-
-
-
-
-
-
-
 }

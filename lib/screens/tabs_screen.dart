@@ -75,45 +75,6 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  Product getProductById(String id) {
-    return _products.firstWhere((product) => product.id == id);
-  }
-
-  void _editProduct(String id, String newName, double newPrice, DateTime newDate, Category newCategory) async{
-    Product productToEdit = getProductById(id);
-    await productService.updateProduct(id, newName,newPrice,newDate,newCategory);
-    setState(() {
-      productToEdit.name = newName;
-      productToEdit.price = newPrice;
-      productToEdit.expiryDate = newDate;
-      productToEdit.category = newCategory;
-    });
-  }
-
-  void _deleteProduct(String id) async {
-    await productService.deleteProduct(id);
-    setState(() {
-      _products.removeWhere((product) => product.id == id);
-    });
-  }
-
-  void _startEditProduct(BuildContext context, String id) {
-    Product productToEdit = getProductById(id);
-    showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return ProductForm(_editProduct, true, id, productToEdit,_categories);
-      },
-    );
-  }
-
-  void _addNewProduct(String name,double price, DateTime expiryDate, Category category) async {
-    Product newProduct = await productService.addProduct(name,price,expiryDate,category);
-    setState(() {
-      _products.add(newProduct);
-    });
-  }
-
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -133,8 +94,6 @@ class _TabsScreenState extends State<TabsScreen> {
             )) : ProductForm(productList.addProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
       },
     );
-
-
   }
 
   @override

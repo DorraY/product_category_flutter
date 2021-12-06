@@ -27,8 +27,8 @@ class ProductList extends StatelessWidget {
       )
           : ListView.builder(
           itemBuilder: (ctx, index) => ProductItem(
-              products[index], () {},
-                  () {}),
+              products[index], productProvider.deleteProduct,
+                  productProvider.startEditProduct),
           itemCount: products.length),
     );
   }

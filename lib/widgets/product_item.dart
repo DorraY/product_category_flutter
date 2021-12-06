@@ -27,7 +27,7 @@ class ProductItem extends StatelessWidget {
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15)),
-                    child: product.image =='' ? Container(height: 250,width: double.infinity,):  Image.network(product.image,
+                    child: product.image =='' ? const SizedBox(height: 250,width: double.infinity,):  Image.network(product.image,
                         height: 250, width: double.infinity, fit: BoxFit.cover) ,
                   ),
                   Positioned(
