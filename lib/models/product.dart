@@ -6,7 +6,7 @@ class Product {
   num price;
   String image;
   DateTime expiryDate;
-  Category? category;
+  Category category;
 
   Product(this.id, this.name, this.price,this.expiryDate, this.category,this.image);
 
@@ -16,7 +16,7 @@ class Product {
       json['name'] as String,
       json['price'] as num,
       DateTime.parse(json['expiryDate']),
-      json['category']==null ? null : Category(json!['category']!["_id"],json!['category']!["title"]),
+      Category(json!['category']!["_id"],json!['category']!["title"]),
       json['image']==null ? '' : backEndUrl+json['image'],
     );
   }
