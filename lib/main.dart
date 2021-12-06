@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'models/product_list.dart';
 import 'screens/tabs_screen.dart';
 
 void main() {
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
                       fontFamily: 'OpenSans',
                       fontSize: 20,
                       fontWeight: FontWeight.bold)))),
-      home: TabsScreen(),
+      home: ChangeNotifierProvider.value(value: ProductList(),child: TabsScreen(),),
     );
   }
 }

@@ -3,10 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:product_category/models/category.dart';
 import 'package:product_category/models/product.dart';
+import 'package:product_category/models/product_list.dart';
 import 'package:product_category/services/category_service.dart';
 import 'package:product_category/services/product_service.dart';
 import 'package:product_category/widgets/product_form.dart';
 import 'package:product_category/widgets/category_form.dart';
+import 'package:provider/provider.dart';
+
 
 import 'category_screen.dart';
 import 'product_screen.dart';
@@ -117,7 +120,7 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  void _openAddForm(BuildContext context, int pageIndex) {
+  void _openAddForm(BuildContext context, int pageIndex,ProductList productList) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -127,7 +130,7 @@ class _TabsScreenState extends State<TabsScreen> {
               child: Text('You cannot add a product without adding categories first',style: TextStyle(
                 fontWeight: FontWeight.w900, fontSize: 10
               ),),
-            )) : ProductForm(_addNewProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
+            )) : ProductForm(productList.addProduct,false,null,null,_categories)) : (CategoryForm(_addNewCategory,false,null,null));
       },
     );
 
@@ -136,12 +139,11 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductList>(context);
 
     final List<Map<String,dynamic>> _pages = [
     {'screen':CategoryScreen(_categories,_startEditCategory,_deleteCategory),'title':'Category'},
-      {'screen':ProductScreen(_categories  ,_startEditProduct,_deleteProduct),'title':'Product'},
-
-    ] ;
+      {'screen':ProductScreen(_categories),'title':'Product'},] ;
 
     return Scaffold(
         appBar: AppBar(
@@ -173,7 +175,7 @@ class _TabsScreenState extends State<TabsScreen> {
           tooltip: _selectedPageIndex ==1 ? 'Add new product' : 'Add new category',
             child: const Icon(Icons.add),
             onPressed: () =>  {
-              _openAddForm(context, _selectedPageIndex)
+              _openAddForm(context, _selectedPageIndex,productProvider)
             }   ),
       ),
 

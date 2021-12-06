@@ -17,6 +17,7 @@ class ProductList extends ChangeNotifier {
       } else {
         showProductList = false;
       }
+      notifyListeners();
     }) ;
   }
 
