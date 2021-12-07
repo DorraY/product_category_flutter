@@ -6,6 +6,7 @@ import 'models/product_list.dart';
 import 'screens/tabs_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
