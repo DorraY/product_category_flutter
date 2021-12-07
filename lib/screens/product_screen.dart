@@ -17,7 +17,6 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   String? selectedDropDownValue;
-  final ProductService productService = ProductService();
 
   @override
   void initState() {

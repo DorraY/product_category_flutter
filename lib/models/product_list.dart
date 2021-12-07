@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:product_category/services/category_service.dart';
@@ -33,9 +35,7 @@ class ProductList extends ChangeNotifier {
     _selectedCategory = value;
   }
 
-  List<Product> get products {
-    return [..._products];
-  }
+  UnmodifiableListView<Product> get products => UnmodifiableListView(_products);
 
   Product getProductById(String id) {
     return _products.firstWhere((product) => product.id == id);
