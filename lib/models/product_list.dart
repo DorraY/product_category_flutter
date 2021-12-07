@@ -27,6 +27,8 @@ class ProductList extends ChangeNotifier {
   }
 
 
+  String get selectedCategory => _selectedCategory;
+
   set selectedCategory(String value) {
     _selectedCategory = value;
   }

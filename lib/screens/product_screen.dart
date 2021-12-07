@@ -18,7 +18,6 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   String? selectedDropDownValue;
   final ProductService productService = ProductService();
-  List<Product> products = [];
 
   @override
   void initState() {
@@ -55,19 +54,9 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Widget getDataButton(double size, prod_provider.ProductList productProvider) {
-    return SizedBox(
-        height: 50,
-        width: MediaQuery.of(context).size.width * size,
-        child: ElevatedButton(
-            onPressed: () =>
-                productProvider.getProductsByCategory(selectedDropDownValue!),
-            child: const Text('Fetch products')));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<prod_provider.ProductList>(context);
+    final productProvider = Provider.of<prod_provider.ProductList>(context,listen: false);
     productProvider.selectedCategory = (widget.categories.isNotEmpty ?  selectedDropDownValue :  '')!;
 
     return widget.categories.isNotEmpty
@@ -76,25 +65,8 @@ class _ProductScreenState extends State<ProductScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  MediaQuery.of(context).size.width > 500
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            categoriesDropDown(0.5),
-                            getDataButton(0.3, productProvider)
-                          ],
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            categoriesDropDown(1),
-                            Container(
-                              height: 10,
-                            ),
-                            getDataButton(0.5, productProvider)
-                          ],
-                        ),
-                  ProductList(productProvider.products, widget.categories)
+                  categoriesDropDown(1),
+                  ProductList()
                 ],
               ),
             ),

@@ -8,20 +8,15 @@ import '../models/product_list.dart' as prod_provider;
 
 class ProductList extends StatelessWidget {
 
-
-  final List<Product> products;
-  final List<Category> categories;
-
-  ProductList(this.products,this.categories);
-
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<prod_provider.ProductList>(context);
     final mediaQuery = MediaQuery.of(context);
+    productProvider.getProductsByCategory(productProvider.selectedCategory);
 
     return SizedBox(
       height: mediaQuery.size.height*0.6,
-      child: products.isEmpty
+      child: productProvider.products.isEmpty
           ?  Center(
         child: Text('No products for the selected category!',style: TextStyle(
           fontSize: MediaQuery.of(context).size.width*0.03
@@ -29,9 +24,9 @@ class ProductList extends StatelessWidget {
       )
           : ListView.builder(
           itemBuilder: (ctx, index) => ProductItem(
-              products[index], productProvider.deleteProduct,
+              productProvider.products[index], productProvider.deleteProduct,
                   productProvider.startEditProduct),
-          itemCount: products.length),
+          itemCount: productProvider.products.length),
     );
   }
 }
