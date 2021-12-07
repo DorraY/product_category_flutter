@@ -24,6 +24,8 @@ class ProductForm extends StatefulWidget {
 class _ProductFormState extends State<ProductForm> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
+  final _form = GlobalKey<FormState>();
+
 
   late DateTime _selectedDate;
   late String selectedDropdownValue;
@@ -53,13 +55,6 @@ class _ProductFormState extends State<ProductForm> {
     final enteredPrice = null ?? double.tryParse(_priceController.text);
     final categoryId = selectedDropdownValue;
 
-    if (enteredPrice == null ||
-        enteredName.isEmpty ||
-        enteredPrice <= 0 ||
-        _selectedDate == null ||
-        categoryId == null) {
-      return;
-    }
     final requestedCategory =
         widget.categories.firstWhere((category) => category.id == categoryId);
 
@@ -118,13 +113,23 @@ class _ProductFormState extends State<ProductForm> {
 
   Widget SubmitButtonWidget() {
     return ElevatedButton(
-        onPressed: () => _submitProductData(widget.editMode),
+        onPressed: () => _saveForm(),
         child: Text(
             widget.editMode
                 ? 'Edit product'
                 : 'Add new product',
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight)));
+  }
+
+  _saveForm() {
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      _form.currentState?.save();
+      _submitProductData(widget.editMode);
+    }
+
+
   }
 
   @override
@@ -135,14 +140,16 @@ class _ProductFormState extends State<ProductForm> {
     selectedDropdownValue = initialDropDownItem.value!;
     super.initState();
   }
+  
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
     return SingleChildScrollView(
       child: Card(
           elevation: 5,
           child: Container(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height*0.5,
             padding: EdgeInsets.only(
                 top: 10,
                 left: 10,
@@ -151,74 +158,107 @@ class _ProductFormState extends State<ProductForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                TextFormField(
-                    cursorColor: Colors.purple,
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
-                      labelStyle: TextStyle(color: Colors.purple),
-                    ),
-                    controller: _nameController),
-                TextFormField(
-                    cursorColor: Colors.purple,
-                    decoration: const InputDecoration(
-                        labelText: 'Price',
-                        labelStyle: TextStyle(color: Colors.purple)),
-                    controller: _priceController,
-                    keyboardType: TextInputType.number),
-                DropdownButtonFormField(
-                  items: dropdownItems,
-                  value: selectedDropdownValue,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedDropdownValue = newValue!;
-                    });
-                  },
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: MediaQuery.of(context).size.width > 300
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                           DateDisplayWidget(),
-                            DatePickerWidget()
-                          ],
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01,
-                              ),
+                Form(
+                  key: _form,
+                  child: Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        TextFormField(
+                            validator: (value) {
+                              if (value?.length==0) {return 'Please provide a name for the product';}
+                              return null;
+                            },
+                            cursorColor: Colors.purple,
+                            decoration: InputDecoration(
+                                labelText: 'Name',
+                                labelStyle: const TextStyle(color: Colors.purple),
+                                errorStyle: TextStyle(color: Theme.of(context).errorColor)
+                            ),
+                            controller: _nameController),
+                        TextFormField(
+                            validator: (value) {
+                              if (value?.length==0) {return 'Please provide a price for the product';}
+                              if (double.tryParse(value!) == null) {return 'Please a valid number';}
+                              if (double.tryParse(value)! <= 0) {return 'Please a valid number greater than 0';}
+                              return null;
+                            },
+                            cursorColor: Colors.purple,
+                            decoration:  InputDecoration(
+                                errorStyle: TextStyle(color: Theme.of(context).errorColor),
+                                labelText: 'Price',
+                                labelStyle: const TextStyle(color: Colors.purple)),
+                            controller: _priceController,
+                            keyboardType: TextInputType.number),
+                        DropdownButtonFormField(
+                          items: dropdownItems,
+                          value: selectedDropdownValue,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedDropdownValue = newValue!;
+                            });
+                          },
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: MediaQuery.of(context).size.width > 300
+                              ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
                               DateDisplayWidget(),
                               DatePickerWidget()
-                            ]),
-                ),
-                MediaQuery.of(context).size.width > 300
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children:  [
-                          ImagePickerWidget(),
-                        ],
-                      )
-                    : Container(),
-                MediaQuery.of(context).size.width > 300
-                    ? SubmitButtonWidget()
-                    : Center(
-                        child: Column(
-                          children: [
+                            ],
+                          )
+                              : Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  height:
+                                  MediaQuery.of(context).size.height * 0.01,
+                                ),
+                                DateDisplayWidget(),
+                                DatePickerWidget()
+                              ]),
+                        ),
+                        MediaQuery.of(context).size.width > 300
+                            ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children:  [
                             ImagePickerWidget(),
-                            Container(height: MediaQuery.of(context).size.height*0.04,),
-                            SubmitButtonWidget(),
+                          ],
+                        )
+                            : Container(),
+                        MediaQuery.of(context).size.width > 300
+                            ? SizedBox(
+                          width: 100,
+                              child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                              SubmitButtonWidget()
                           ],
                         ),
-                      )
+                            )
+                            : Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              ImagePickerWidget(),
+                              Container(height: MediaQuery.of(context).size.height*0.04,),
+                              SubmitButtonWidget(),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
               ],
             ),
           )),
     );
   }
+
+
 
 
 }
