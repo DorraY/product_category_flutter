@@ -98,7 +98,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductList>(context);
+    final productProvider = Provider.of<ProductList>(context,listen: false);
 
     final List<Map<String, dynamic>> _pages = [
       {
