@@ -7,7 +7,6 @@ class CategoryForm extends StatefulWidget {
   String? id;
   Category? categoryToEdit;
 
-
   CategoryForm(this.action, this.editMode, this.id, this.categoryToEdit);
 
   @override
@@ -15,8 +14,8 @@ class CategoryForm extends StatefulWidget {
 }
 
 class _CategoryFormState extends State<CategoryForm> {
-
   final _titleController = TextEditingController();
+  final _form = GlobalKey<FormState>();
 
   void patchTextFieldValues() {
     if (widget.editMode && widget.categoryToEdit != null) {
@@ -26,16 +25,20 @@ class _CategoryFormState extends State<CategoryForm> {
 
   void _submitCategoryData(bool editMode) {
     final enteredTitle = _titleController.text;
-    if (enteredTitle.isEmpty) {
-      return;
-    }
     if (editMode) {
-      widget.action(
-          widget.id, enteredTitle);
+      widget.action(widget.id, enteredTitle);
     } else {
       widget.action(enteredTitle);
     }
     Navigator.of(context).pop();
+  }
+
+  void _saveForm() {
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      _form.currentState?.save();
+      _submitCategoryData(widget.editMode);
+    }
   }
 
   @override
@@ -44,44 +47,65 @@ class _CategoryFormState extends State<CategoryForm> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Card(
           elevation: 5,
           child: Container(
             height: MediaQuery.of(context).size.height,
             padding: EdgeInsets.only(
-                top:10,
-                left:10,
-                right:10,
-                bottom: MediaQuery.of(context).viewInsets.bottom+10 ),
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 10),
             child: Column(
-
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                TextFormField(
-                    cursorColor: Colors.purple,
-                    decoration: const InputDecoration(
-                      labelText: 'Title',
-                      labelStyle: TextStyle(color: Colors.purple),
+                Form(
+                  key: _form,
+                  child: Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        TextFormField(
+                          validator: (value) {
+                            if (value!=null) {
+                              if (value.isEmpty) {return 'Please enter the category title';}
+                            }
+                            return null;
+                          } ,
+                            cursorColor: Colors.purple,
+                            decoration:  InputDecoration(
+                              errorStyle: TextStyle(color: Theme.of(context).errorColor),
+                              labelText: 'Title',
+                              labelStyle: const TextStyle(color: Colors.purple),
+                            ),
+                            controller: _titleController,
+                            onFieldSubmitted: (_) =>
+                                _submitCategoryData(widget.editMode)),
+                        Container(
+                          height: MediaQuery.of(context).size.height*0.05,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              child: ElevatedButton(
+                                  onPressed: () => _saveForm(),
+                                  child: Text(
+                                      widget.editMode
+                                          ? 'Edit category'
+                                          : 'Add new category',
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColorLight))),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    controller: _titleController,
-                    onFieldSubmitted: (_) =>
-                        _submitCategoryData(widget.editMode)),
-                Container(
-                  height: MediaQuery.of(context).size.height*0.05,
+                  ),
                 ),
-                ElevatedButton(
-                    onPressed: () => _submitCategoryData(widget.editMode),
-                    child: Text(
-                        widget.editMode
-                            ? 'Edit category'
-                            : 'Add new category',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight)))
               ],
             ),
           )),
